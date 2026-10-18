@@ -39,6 +39,7 @@ terraform {
 ```
 
 <!-- BEGIN_TF_DOCS -->
+<!-- prettier-ignore-start -->
 ## Requirements
 
 | Name | Version |
@@ -87,4 +88,5 @@ terraform {
 | bucket\_name | Name of the state bucket. |
 | kms\_alias\_name | Full alias name of the encryption key (for example `alias/identity-platform-state`). |
 | kms\_key\_arn | ARN of the KMS key for OpenTofu client-side state and plan encryption. |
+<!-- prettier-ignore-end -->
 <!-- END_TF_DOCS -->

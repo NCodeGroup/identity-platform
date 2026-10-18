@@ -35,7 +35,11 @@ Decisions behind it:
 
 ## Before you start
 
-1. Finish runbook steps 1–5 (registrar, GitHub, Cloudflare bootstrap token, AWS account, OCI).
+1. Finish the [runbook](https://github.com/NCodeGroup/Identity/blob/main/docs/platform-bootstrap.md) sections
+   [1. Domain registrar](https://github.com/NCodeGroup/Identity/blob/main/docs/platform-bootstrap.md#1-domain-registrar-porkbun)
+   through
+   [5. OCI](https://github.com/NCodeGroup/Identity/blob/main/docs/platform-bootstrap.md#5-oci-the-lab) — registrar,
+   GitHub, Cloudflare bootstrap token, AWS account, OCI. This README is the runbook's section 6.
 2. Install OpenTofu through [tenv](https://github.com/tofuutils/tenv); in the repository run `tenv tofu install`, which
    installs the version in `.opentofu-version`.
 3. Put the platform AWS account ID into `terraform.tfvars` as `aws_account_id` and commit it. It is not a secret, and the
@@ -75,9 +79,12 @@ guard keep safe.
    tofu apply
    ```
 
-   The first apply imports the repository you created by hand (runbook step 2) instead of creating it. If DNSSEC fails
-   because the zone is still `pending`, carry on: delegate the domain to the name servers shown in the Cloudflare
-   dashboard (runbook step 7) and re-run `tofu apply` once the zone is active.
+   The first apply imports the repository you created by hand (runbook section
+   [2. GitHub](https://github.com/NCodeGroup/Identity/blob/main/docs/platform-bootstrap.md#2-github-organization-and-repository))
+   instead of creating it. If DNSSEC fails because the zone is still `pending`, carry on: delegate the domain to the
+   name servers shown in the Cloudflare dashboard (runbook section
+   [7. Delegate the domain](https://github.com/NCodeGroup/Identity/blob/main/docs/platform-bootstrap.md#7-delegate-the-domain))
+   and re-run `tofu apply` once the zone is active.
 
 3. **Move the state into S3.** Delete the override and let OpenTofu copy the state into
    `s3://<name_prefix>-tofu-state-<aws_account_id>/bootstrap/terraform.tfstate`; answer `yes` when it asks to copy:
@@ -131,6 +138,7 @@ versions like every other root
 the member rule).
 
 <!-- BEGIN_TF_DOCS -->
+<!-- prettier-ignore-start -->
 ## Requirements
 
 | Name | Version |
@@ -201,4 +209,5 @@ the member rule).
 | name\_servers | Cloudflare name servers to set at the registrar. |
 | state\_bucket | Bucket that holds every root's state. |
 | state\_kms\_key\_arn | KMS key that encrypts state at rest and client-side in CI roots. |
+<!-- prettier-ignore-end -->
 <!-- END_TF_DOCS -->

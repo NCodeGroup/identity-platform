@@ -37,6 +37,7 @@ output "registrar" {
 ```
 
 <!-- BEGIN_TF_DOCS -->
+<!-- prettier-ignore-start -->
 ## Requirements
 
 | Name | Version |
@@ -83,4 +84,5 @@ output "registrar" {
 | name\_servers | Nameservers to set at the registrar. |
 | status | Zone status; `pending` until the registrar delegates to the name\_servers. |
 | zone\_id | Cloudflare zone ID. |
+<!-- prettier-ignore-end -->
 <!-- END_TF_DOCS -->

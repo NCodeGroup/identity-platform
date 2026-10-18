@@ -52,6 +52,7 @@ import {
 ```
 
 <!-- BEGIN_TF_DOCS -->
+<!-- prettier-ignore-start -->
 ## Requirements
 
 | Name | Version |
@@ -107,4 +108,5 @@ import {
 | ---- | ----------- |
 | environments | Names of the deployment environments. |
 | full\_name | Repository as `owner/name`. |
+<!-- prettier-ignore-end -->
 <!-- END_TF_DOCS -->

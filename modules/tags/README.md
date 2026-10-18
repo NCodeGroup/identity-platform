@@ -4,11 +4,11 @@ The shared tags every platform resource carries
 ([ADR-0135](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0135-one-resource-tagging-strategy-across-every-vendor.md)),
 produced once and rendered in each vendor's format. It has no provider, so any root can call it.
 
-| Output    | Form                                   | Use it for                                              |
-| --------- | -------------------------------------- | ------------------------------------------------------- |
-| `map`     | `{ key = value }`                      | AWS provider `default_tags`, OCI freeform tags, labels  |
-| `list`    | sorted `["key:value", …]`              | Akamai/Linode tags (50-character limit per tag)         |
-| `comment` | `managed_by=… source=…` (≤ 100 chars)  | Cloudflare DNS record comments (no tags on Free plans)  |
+| Output    | Form                                  | Use it for                                             |
+| --------- | ------------------------------------- | ------------------------------------------------------ |
+| `map`     | `{ key = value }`                     | AWS provider `default_tags`, OCI freeform tags, labels |
+| `list`    | sorted `["key:value", …]`             | Akamai/Linode tags (50-character limit per tag)        |
+| `comment` | `managed_by=… source=…` (≤ 100 chars) | Cloudflare DNS record comments (no tags on Free plans) |
 
 Rules the module enforces:
 
@@ -42,6 +42,7 @@ provider "aws" {
 ```
 
 <!-- BEGIN_TF_DOCS -->
+<!-- prettier-ignore-start -->
 ## Requirements
 
 | Name | Version |
@@ -66,4 +67,5 @@ provider "aws" {
 | comment | Stable one-line provenance for resources that only support a comment (Cloudflare DNS records, at most 100 characters). |
 | list | Shared tags as sorted `key:value` strings (Akamai tags). |
 | map | Shared tags as a key/value map (AWS `default_tags`, OCI freeform tags). |
+<!-- prettier-ignore-end -->
 <!-- END_TF_DOCS -->

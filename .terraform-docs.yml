@@ -6,7 +6,9 @@ output:
   mode: inject
   template: |-
     <!-- BEGIN_TF_DOCS -->
+    <!-- prettier-ignore-start -->
     {{ .Content }}
+    <!-- prettier-ignore-end -->
     <!-- END_TF_DOCS -->
 
 sort:

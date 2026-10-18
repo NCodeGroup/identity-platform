@@ -34,6 +34,7 @@ resource "aws_iam_role_policy" "backup_writer" {
 > are under retention.
 
 <!-- BEGIN_TF_DOCS -->
+<!-- prettier-ignore-start -->
 ## Requirements
 
 | Name | Version |
@@ -85,4 +86,5 @@ resource "aws_iam_role_policy" "backup_writer" {
 | bucket\_arn | ARN of the backup bucket. |
 | bucket\_name | Name of the backup bucket. |
 | writer\_policy\_json | IAM policy granting write-only access for a backup job (no read, list, or delete). |
+<!-- prettier-ignore-end -->
 <!-- END_TF_DOCS -->

@@ -39,6 +39,7 @@ The workflow then needs only `permissions: id-token: write` and `aws-actions/con
 ARN.
 
 <!-- BEGIN_TF_DOCS -->
+<!-- prettier-ignore-start -->
 ## Requirements
 
 | Name | Version |
@@ -77,4 +78,5 @@ ARN.
 | ---- | ----------- |
 | provider\_arn | ARN of the GitHub OIDC identity provider. |
 | role\_arns | Role ARNs keyed by role name. |
+<!-- prettier-ignore-end -->
 <!-- END_TF_DOCS -->

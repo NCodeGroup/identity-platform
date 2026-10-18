@@ -30,6 +30,7 @@ resource "aws_ssm_parameter" "token" {
 ```
 
 <!-- BEGIN_TF_DOCS -->
+<!-- prettier-ignore-start -->
 ## Requirements
 
 | Name | Version |
@@ -71,4 +72,5 @@ resource "aws_ssm_parameter" "token" {
 | alias\_name | Full alias name (for example `alias/identity-platform-secrets`). |
 | key\_arn | ARN of the key. |
 | key\_id | ID of the key. |
+<!-- prettier-ignore-end -->
 <!-- END_TF_DOCS -->
