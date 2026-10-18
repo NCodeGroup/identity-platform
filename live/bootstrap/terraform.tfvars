@@ -1,3 +1,4 @@
+aws_account_id                 = "276115452055"
 aws_region                     = "us-west-2"
 name_prefix                    = "nidentity-platform"
 domain                         = "nidentity.io"
