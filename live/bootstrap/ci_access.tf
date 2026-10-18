@@ -80,7 +80,7 @@ data "aws_iam_policy_document" "ci" {
 }
 
 module "github_oidc" {
-  source = "../../modules/aws-github-oidc"
+  source = "git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-github-oidc?ref=v0.1.0"
 
   repository = local.repository
 

@@ -7,7 +7,7 @@ import {
 }
 
 module "repository" {
-  source = "../../modules/github-repository"
+  source = "git::https://github.com/NCodeGroup/identity-platform.git//modules/github-repository?ref=v0.1.0"
 
   name         = var.github_repository
   description  = "Infrastructure as code for the hosted NCode.Identity platform: OpenTofu components, Flux GitOps, and live environments."

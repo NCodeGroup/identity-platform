@@ -132,10 +132,11 @@ apply, by design.
 
 ## Module sources
 
-Until the repository's first release exists, this root references components by relative path. It then pins released
-versions like every other root
+Like every root, this one consumes components only by released version — pinned to a protected, immutable release tag
+(`?ref=vX.Y.Z`), never by local path; CI rejects anything else
 ([ADR-0133](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0133-we-ship-and-run-the-same-deployment-artifacts.md),
-the member rule).
+the member rule). A component change therefore reaches this root in two steps: release it, then bump the `ref` here
+(Dependabot proposes the bump).
 
 <!-- BEGIN_TF_DOCS -->
 <!-- prettier-ignore-start -->
@@ -161,13 +162,13 @@ the member rule).
 
 | Name | Source | Version |
 | ---- | ------ | ------- |
-| backup\_bucket | ../../modules/aws-backup-bucket | n/a |
-| github\_oidc | ../../modules/aws-github-oidc | n/a |
-| repository | ../../modules/github-repository | n/a |
-| secrets\_key | ../../modules/aws-kms-key | n/a |
-| state\_backend | ../../modules/aws-state-backend | n/a |
-| tags | ../../modules/tags | n/a |
-| zone | ../../modules/cloudflare-zone | n/a |
+| backup\_bucket | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-backup-bucket | v0.1.0 |
+| github\_oidc | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-github-oidc | v0.1.0 |
+| repository | git::https://github.com/NCodeGroup/identity-platform.git//modules/github-repository | v0.1.0 |
+| secrets\_key | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-kms-key | v0.1.0 |
+| state\_backend | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-state-backend | v0.1.0 |
+| tags | git::https://github.com/NCodeGroup/identity-platform.git//modules/tags | v0.1.0 |
+| zone | git::https://github.com/NCodeGroup/identity-platform.git//modules/cloudflare-zone | v0.1.0 |
 
 ## Resources
 
