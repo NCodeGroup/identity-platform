@@ -1,0 +1,81 @@
+name: validate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  TF_IN_AUTOMATION: "1"
+  TF_INPUT: "0"
+  TERRAFORM_DOCS_VERSION: v0.24.0
+
+jobs:
+  validate:
+    name: validate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: opentofu/setup-opentofu@a1320f892987e89d278cc92dc5adc984fb93aca4 # v2.0.2
+        with:
+          tofu_version_file: .opentofu-version
+          tofu_wrapper: false
+
+      - name: Install terraform-docs
+        run: |
+          dir="$RUNNER_TEMP/terraform-docs"
+          mkdir -p "$dir"
+          cd "$dir"
+          base="https://github.com/terraform-docs/terraform-docs/releases/download/${TERRAFORM_DOCS_VERSION}"
+          archive="terraform-docs-${TERRAFORM_DOCS_VERSION}-linux-amd64.tar.gz"
+          curl -fsSLO "$base/$archive"
+          curl -fsSLO "$base/terraform-docs-${TERRAFORM_DOCS_VERSION}.sha256sum"
+          grep " ${archive}\$" "terraform-docs-${TERRAFORM_DOCS_VERSION}.sha256sum" | sha256sum --check --strict
+          tar -xzf "$archive" terraform-docs
+          echo "$dir" >> "$GITHUB_PATH"
+
+      - name: Share the provider cache
+        run: |
+          mkdir -p "$RUNNER_TEMP/tofu-plugin-cache"
+          echo "TF_PLUGIN_CACHE_DIR=$RUNNER_TEMP/tofu-plugin-cache" >> "$GITHUB_ENV"
+
+      - name: Format
+        run: tofu fmt -check -recursive -diff
+
+      - name: Components
+        run: |
+          for dir in modules/*/; do
+            echo "::group::${dir}"
+            tofu -chdir="$dir" init -backend=false
+            tofu -chdir="$dir" validate
+            tofu -chdir="$dir" test
+            echo "::endgroup::"
+          done
+
+      - name: Live roots
+        run: |
+          for dir in live/*/; do
+            echo "::group::${dir}"
+            tofu -chdir="$dir" init -backend=false -lockfile=readonly
+            tofu -chdir="$dir" validate
+            tofu -chdir="$dir" test
+            echo "::endgroup::"
+          done
+
+      - name: Generated docs are current
+        run: |
+          for path in modules live; do
+            terraform-docs --config .terraform-docs.yml --recursive --recursive-path "$path" \
+              --recursive-include-main=false --output-check .
+          done

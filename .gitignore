@@ -1,0 +1,26 @@
+# OpenTofu working directories and state — state lives in the remote backend, never in Git
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.plan
+crash.log
+crash.*.log
+
+# Plan/apply output can contain rendered secrets — never commit it
+plan.txt
+apply.txt
+
+# Local-only overrides (for example the first-run local backend in live/bootstrap)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Operator-specific or secret variable files
+*.auto.tfvars
+*.auto.tfvars.json
+secrets.tfvars
+
+# Components are libraries: their consumers own the provider lock file
+modules/**/.terraform.lock.hcl

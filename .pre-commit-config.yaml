@@ -1,0 +1,27 @@
+# Install once with `pre-commit install`; requires gitleaks, OpenTofu, and terraform-docs on PATH.
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks-system
+        pass_filenames: false
+  - repo: local
+    hooks:
+      - id: tofu-fmt
+        name: tofu fmt
+        entry: tofu fmt -check -recursive
+        language: system
+        pass_filenames: false
+        files: \.(tf|tftest\.hcl)$
+      - id: terraform-docs-modules
+        name: terraform-docs (modules)
+        entry: terraform-docs --config .terraform-docs.yml --recursive --recursive-path modules --recursive-include-main=false .
+        language: system
+        pass_filenames: false
+        files: ^modules/.*\.(tf|md)$
+      - id: terraform-docs-live
+        name: terraform-docs (live)
+        entry: terraform-docs --config .terraform-docs.yml --recursive --recursive-path live --recursive-include-main=false .
+        language: system
+        pass_filenames: false
+        files: ^live/.*\.(tf|md)$

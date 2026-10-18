@@ -1,0 +1,10 @@
+aws_region                     = "us-west-2"
+name_prefix                    = "nidentity-platform"
+domain                         = "nidentity.io"
+cloudflare_account_id          = "65ff5e83ff7a063cde090a3079d487ec"
+github_owner                   = "NCodeGroup"
+github_repository              = "identity-platform"
+github_reviewers               = ["polewskm"]
+owner_email                    = "platform@nidentity.io"
+monthly_budget_usd             = 10
+cloudflare_token_rotation_days = 90
