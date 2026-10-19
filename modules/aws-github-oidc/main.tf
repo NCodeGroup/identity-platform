@@ -4,6 +4,9 @@ locals {
     role                = "ci-access"
     data_classification = "internal"
   })
+
+  # GitHub's immutable subject format: repo:<owner>@<owner_id>/<name>@<id>:<context>.
+  subject_prefix = "repo:${var.repository.owner}@${var.repository.owner_id}/${var.repository.name}@${var.repository.id}"
 }
 
 resource "aws_iam_openid_connect_provider" "github" {
@@ -38,7 +41,14 @@ data "aws_iam_policy_document" "trust" {
     condition {
       test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = [for s in each.value.subjects : "repo:${var.repository}:${s}"]
+      values   = [for s in each.value.subjects : "${local.subject_prefix}:${s}"]
+    }
+
+    # Sessions must be named gh-<run_id>-<run_attempt> so CloudTrail ties every call to its workflow run.
+    condition {
+      test     = "StringLike"
+      variable = "sts:RoleSessionName"
+      values   = ["gh-*-*"]
     }
   }
 }

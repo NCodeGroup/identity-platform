@@ -80,9 +80,14 @@ data "aws_iam_policy_document" "ci" {
 }
 
 module "github_oidc" {
-  source = "git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-github-oidc?ref=v0.1.0"
+  source = "git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-github-oidc?ref=v0.2.0"
 
-  repository = local.repository
+  repository = {
+    owner    = var.github_owner
+    owner_id = data.github_organization.owner.id
+    name     = var.github_repository
+    id       = module.repository.repository_id
+  }
 
   roles = {
     "${var.name_prefix}-plan" = {

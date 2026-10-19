@@ -1,16 +1,30 @@
 variable "repository" {
-  description = "GitHub repository allowed to assume the roles, as `owner/name` (case-sensitive, as shown on GitHub)."
-  type        = string
+  description = <<-EOT
+    GitHub repository allowed to assume the roles. `owner` and `name` are case-sensitive, as shown on GitHub. `owner_id`
+    and `id` are GitHub's numeric owner and repository IDs; the trust policy matches GitHub's immutable subject, so a
+    re-created owner or repository with the same name can't assume the roles.
+  EOT
+  type = object({
+    owner    = string
+    owner_id = string
+    name     = string
+    id       = string
+  })
 
   validation {
-    condition     = can(regex("^[A-Za-z0-9-]+/[A-Za-z0-9._-]+$", var.repository))
-    error_message = "repository must be in the form owner/name."
+    condition     = can(regex("^[A-Za-z0-9-]+$", var.repository.owner)) && can(regex("^[A-Za-z0-9._-]+$", var.repository.name))
+    error_message = "repository.owner and repository.name must be a GitHub owner login and repository name."
+  }
+
+  validation {
+    condition     = can(regex("^[1-9][0-9]*$", var.repository.owner_id)) && can(regex("^[1-9][0-9]*$", var.repository.id))
+    error_message = "repository.owner_id and repository.id must be GitHub's numeric IDs."
   }
 }
 
 variable "roles" {
   description = <<-EOT
-    Roles to create, keyed by IAM role name. `subjects` are GitHub OIDC subject suffixes after `repo:<owner>/<name>:` —
+    Roles to create, keyed by IAM role name. `subjects` are GitHub OIDC subject suffixes after the repository segment —
     for example `environment:production` or `pull_request`. `policy_json` is the inline permission policy.
   EOT
   type = map(object({
