@@ -6,7 +6,7 @@ locals {
 }
 
 module "tags" {
-  source = "git::https://github.com/NCodeGroup/identity-platform.git//modules/tags?ref=v0.2.0"
+  source = "git::https://github.com/NCodeGroup/identity-platform.git//modules/tags?ref=v0.3.0"
 
   application = "ncode-identity"
   environment = "shared"
@@ -16,20 +16,20 @@ module "tags" {
 }
 
 module "state_backend" {
-  source = "git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-state-backend?ref=v0.2.0"
+  source = "git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-state-backend?ref=v0.3.0"
 
   bucket_name = "${var.name_prefix}-tofu-state-${var.aws_account_id}"
   kms_alias   = "${var.name_prefix}-tofu-state"
 }
 
 module "backup_bucket" {
-  source = "git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-backup-bucket?ref=v0.2.0"
+  source = "git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-backup-bucket?ref=v0.3.0"
 
   bucket_name = "${var.name_prefix}-backups-${var.aws_account_id}"
 }
 
 module "secrets_key" {
-  source = "git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-kms-key?ref=v0.2.0"
+  source = "git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-kms-key?ref=v0.3.0"
 
   alias       = "${var.name_prefix}-secrets"
   description = "Encrypts the SSM parameters that hold vendor tokens for CI."
