@@ -98,10 +98,13 @@ guard keep safe.
    ```powershell
    Remove-Item backend_override.tf
    tofu init -migrate-state
-   Remove-Item terraform.tfstate, terraform.tfstate.backup, bootstrap.tfplan
+   Remove-Item terraform.tfstate*, bootstrap.tfplan
    ```
 
-4. **Verify.** `tofu plan` reports no changes, and the state object exists in the bucket.
+4. **Verify.** `tofu plan` reports no changes, and the state object exists in the bucket. Until the domain is
+   delegated and its DS record published (runbook section 7), the plan shows one in-place update of
+   `cloudflare_zone_dnssec` from `pending` to `active` — don't apply it; it disappears once Cloudflare sees the DS
+   record.
 
 5. **Revoke** the Cloudflare bootstrap token and the GitHub token, and close the shell.
 
