@@ -60,8 +60,9 @@ and staging are tenants on production — those words never name a platform envi
   `managed_by`, `source`, plus the component's `component`, `role`, `data_classification`, and `deletion_protection`.
   Values are static so plans never drift
   ([ADR-0135](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0135-one-resource-tagging-strategy-across-every-vendor.md)).
-- **Versions.** The OpenTofu version is pinned in `.opentofu-version`. Components declare provider version ranges;
-  each live root pins exact providers in its committed `.terraform.lock.hcl`.
+- **Versions.** The OpenTofu version is pinned in `.opentofu-version`. Components declare provider version ranges whose
+  floor is the first release with every resource and attribute they use (check the provider's tagged sources, not
+  just the current docs); each live root pins exact providers in its committed `.terraform.lock.hcl`.
 - **Releases.** The repository releases with one semantic version; release tags are immutable. Live roots consume
   components only by released version — `git::https://github.com/NCodeGroup/identity-platform.git//modules/<name>?ref=vX.Y.Z`
   — and CI rejects local paths there (the member rule,
