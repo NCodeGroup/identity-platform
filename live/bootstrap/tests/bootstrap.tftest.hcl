@@ -12,6 +12,19 @@ mock_provider "github" {
       id = "1234567"
     }
   }
+
+  # Numeric IDs, as GitHub returns them; the OIDC component rejects anything else.
+  mock_data "github_organization" {
+    defaults = {
+      id = "12114478"
+    }
+  }
+
+  mock_resource "github_repository" {
+    defaults = {
+      repo_id = 1424838623
+    }
+  }
 }
 
 mock_provider "time" {

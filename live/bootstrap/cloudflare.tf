@@ -1,5 +1,5 @@
 module "zone" {
-  source = "git::https://github.com/NCodeGroup/identity-platform.git//modules/cloudflare-zone?ref=v0.1.0"
+  source = "git::https://github.com/NCodeGroup/identity-platform.git//modules/cloudflare-zone?ref=v0.2.0"
 
   account_id     = var.cloudflare_account_id
   name           = var.domain

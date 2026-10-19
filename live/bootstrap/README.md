@@ -112,12 +112,13 @@ The repository rulesets now require a pull request with a passing `validate` che
 
 ## Later runs
 
-Same credentials and passphrase, no override file:
+Same credentials and passphrase, no override file, and again from a saved plan:
 
 ```powershell
 tofu init
-tofu plan
-tofu apply
+tofu plan -out bootstrap.tfplan
+tofu apply bootstrap.tfplan
+Remove-Item bootstrap.tfplan
 ```
 
 Every command that evaluates the configuration — `plan`, `apply`, `output`, `console`, even `providers schema` — needs
@@ -165,19 +166,20 @@ the member rule). A component change therefore reaches this root in two steps: r
 | ---- | ------- |
 | aws | ~> 6.69 |
 | cloudflare | ~> 5.28 |
+| github | ~> 6.13 |
 | time | ~> 0.14 |
 
 ## Modules
 
 | Name | Source | Version |
 | ---- | ------ | ------- |
-| backup\_bucket | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-backup-bucket | v0.1.0 |
-| github\_oidc | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-github-oidc | v0.1.0 |
-| repository | git::https://github.com/NCodeGroup/identity-platform.git//modules/github-repository | v0.1.0 |
-| secrets\_key | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-kms-key | v0.1.0 |
-| state\_backend | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-state-backend | v0.1.0 |
-| tags | git::https://github.com/NCodeGroup/identity-platform.git//modules/tags | v0.1.0 |
-| zone | git::https://github.com/NCodeGroup/identity-platform.git//modules/cloudflare-zone | v0.1.0 |
+| backup\_bucket | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-backup-bucket | v0.2.0 |
+| github\_oidc | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-github-oidc | v0.2.0 |
+| repository | git::https://github.com/NCodeGroup/identity-platform.git//modules/github-repository | v0.2.0 |
+| secrets\_key | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-kms-key | v0.2.0 |
+| state\_backend | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-state-backend | v0.2.0 |
+| tags | git::https://github.com/NCodeGroup/identity-platform.git//modules/tags | v0.2.0 |
+| zone | git::https://github.com/NCodeGroup/identity-platform.git//modules/cloudflare-zone | v0.2.0 |
 
 ## Resources
 
@@ -190,6 +192,7 @@ the member rule). A component change therefore reaches this root in two steps: r
 | [aws_iam_policy_document.ci](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [cloudflare_account_api_token_permission_groups_list.account](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/data-sources/account_api_token_permission_groups_list) | data source |
 | [cloudflare_account_api_token_permission_groups_list.zone](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/data-sources/account_api_token_permission_groups_list) | data source |
+| [github_organization.owner](https://registry.terraform.io/providers/integrations/github/latest/docs/data-sources/organization) | data source |
 
 ## Inputs
 
