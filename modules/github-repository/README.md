@@ -108,5 +108,6 @@ import {
 | ---- | ----------- |
 | environments | Names of the deployment environments. |
 | full\_name | Repository as `owner/name`. |
+| repository\_id | GitHub's numeric repository ID; unlike the name, it never changes or gets reused. |
 <!-- prettier-ignore-end -->
 <!-- END_TF_DOCS -->
