@@ -4,16 +4,16 @@ The root of trust for the platform. It creates everything the CI pipeline needs 
 the one root an owner runs by hand, from their own machine, with short-lived credentials. Every other root runs from
 GitHub Actions.
 
-| Creates                                       | Why it can't come from CI                            |
-| --------------------------------------------- | ---------------------------------------------------- |
-| S3 state bucket + KMS key                     | CI keeps its state there                             |
-| S3 backup bucket (Object Lock)                | Shared foundation, protected from every CI role      |
-| KMS key for secrets                           | Encrypts the vendor tokens CI reads                  |
-| GitHub OIDC provider and the plan/apply roles | These _are_ CI's AWS identity                        |
-| Cloudflare zone, DNSSEC, CAA, DMARC           | The zone must exist before scoped tokens can name it |
-| Scoped Cloudflare tokens → SSM SecureString   | CI's Cloudflare credentials, rotated here            |
-| Repository settings, rulesets, environments   | Gate who can obtain the apply roles                  |
-| Monthly AWS budget alert                      | Cost guard for the whole account                     |
+| Creates                                                | Why it can't come from CI                            |
+| ------------------------------------------------------ | ---------------------------------------------------- |
+| S3 state bucket + KMS key                              | CI keeps its state there                             |
+| S3 backup bucket (Object Lock)                         | Shared foundation, protected from every CI role      |
+| KMS key for secrets                                    | Encrypts the vendor tokens CI reads                  |
+| GitHub OIDC provider and the plan/apply roles          | These _are_ CI's AWS identity                        |
+| Cloudflare zone, DNSSEC, CAA, DMARC, Universal SSL off | The zone must exist before scoped tokens can name it |
+| Scoped Cloudflare tokens → SSM SecureString            | CI's Cloudflare credentials, rotated here            |
+| Repository settings, rulesets, environments            | Gate who can obtain the apply roles                  |
+| Monthly AWS budget alert                               | Cost guard for the whole account                     |
 
 Decisions behind it:
 [ADR-0132](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0132-platform-infrastructure-as-code-is-public-on-github.md)
@@ -173,13 +173,13 @@ the member rule). A component change therefore reaches this root in two steps: r
 
 | Name | Source | Version |
 | ---- | ------ | ------- |
-| backup\_bucket | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-backup-bucket | v0.2.0 |
-| github\_oidc | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-github-oidc | v0.2.0 |
-| repository | git::https://github.com/NCodeGroup/identity-platform.git//modules/github-repository | v0.2.0 |
-| secrets\_key | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-kms-key | v0.2.0 |
-| state\_backend | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-state-backend | v0.2.0 |
-| tags | git::https://github.com/NCodeGroup/identity-platform.git//modules/tags | v0.2.0 |
-| zone | git::https://github.com/NCodeGroup/identity-platform.git//modules/cloudflare-zone | v0.2.0 |
+| backup\_bucket | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-backup-bucket | v0.3.0 |
+| github\_oidc | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-github-oidc | v0.3.0 |
+| repository | git::https://github.com/NCodeGroup/identity-platform.git//modules/github-repository | v0.3.0 |
+| secrets\_key | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-kms-key | v0.3.0 |
+| state\_backend | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-state-backend | v0.3.0 |
+| tags | git::https://github.com/NCodeGroup/identity-platform.git//modules/tags | v0.3.0 |
+| zone | git::https://github.com/NCodeGroup/identity-platform.git//modules/cloudflare-zone | v0.3.0 |
 
 ## Resources
 
