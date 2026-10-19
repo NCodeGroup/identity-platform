@@ -1,0 +1,48 @@
+name: deploy
+
+on:
+  pull_request:
+    paths:
+      - live/**
+      - .opentofu-version
+      - .github/actions/**
+      - .github/workflows/deploy.yml
+      - .github/workflows/tofu-root.yml
+  push:
+    branches: [main]
+    paths:
+      - live/**
+      - .opentofu-version
+      - .github/actions/**
+      - .github/workflows/deploy.yml
+      - .github/workflows/tofu-root.yml
+  schedule:
+    # Daily drift check: a plan with changes on main fails the run.
+    - cron: "23 14 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ github.event_name == 'pull_request' && github.ref || 'main' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  global:
+    # Fork and Dependabot pull requests get no OIDC token; they are planned again after merge.
+    if: >-
+      github.event_name != 'pull_request' ||
+      (github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]')
+    uses: ./.github/workflows/tofu-root.yml
+    permissions:
+      contents: read
+      id-token: write
+    with:
+      root: global
+      environment: production
+      secret_scope: global
+      ssm_env: |
+        CLOUDFLARE_API_TOKEN=cloudflare-api-token
+        TF_VAR_email_destination=email-destination
+      apply: ${{ github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') }}

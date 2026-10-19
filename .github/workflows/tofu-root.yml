@@ -1,0 +1,159 @@
+name: tofu-root
+
+on:
+  workflow_call:
+    inputs:
+      root:
+        description: Directory under live/ to plan and apply.
+        type: string
+        required: true
+      environment:
+        description: GitHub environment that gates the apply and supplies its IAM role (AWS_ROLE_ARN).
+        type: string
+        required: true
+      secret_scope:
+        description: SSM scope the apply role reads its secrets from (/<repository>/<scope>/...).
+        type: string
+        required: true
+      ssm_env:
+        description: Newline-separated ENV_NAME=parameter pairs loaded from SSM before OpenTofu runs.
+        type: string
+        default: ""
+      apply:
+        description: Apply the plan when it has changes.
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+env:
+  TF_IN_AUTOMATION: "1"
+  TF_INPUT: "0"
+  ROOT_DIR: live/${{ inputs.root }}
+
+jobs:
+  plan:
+    name: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      id-token: write
+    outputs:
+      has_changes: ${{ steps.plan.outputs.has_changes }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: opentofu/setup-opentofu@a1320f892987e89d278cc92dc5adc984fb93aca4 # v2.0.2
+        with:
+          tofu_version_file: .opentofu-version
+          tofu_wrapper: false
+
+      - uses: ./.github/actions/aws-oidc
+        with:
+          role-arn: ${{ vars.AWS_PLAN_ROLE_ARN }}
+          region: ${{ vars.AWS_REGION }}
+
+      - name: Load secrets
+        env:
+          PREFIX: /${{ github.event.repository.name }}/plan
+          SSM_ENV: ${{ inputs.ssm_env }}
+        run: |
+          set -euo pipefail
+          while IFS='=' read -r name parameter; do
+            [ -z "${name}" ] && continue
+            value=$(aws ssm get-parameter --name "${PREFIX}/${parameter}" --with-decryption \
+              --query Parameter.Value --output text)
+            echo "::add-mask::${value}"
+            echo "${name}=${value}" >> "${GITHUB_ENV}"
+          done <<< "${SSM_ENV}"
+
+      - name: Plan
+        id: plan
+        working-directory: ${{ env.ROOT_DIR }}
+        run: |
+          set -uo pipefail
+          tofu init -lockfile=readonly || exit 1
+          tofu plan -lock-timeout=5m -detailed-exitcode -out=tfplan
+          rc=$?
+          [ "${rc}" -eq 1 ] && exit 1
+          has_changes=false
+          [ "${rc}" -eq 2 ] && has_changes=true
+          echo "has_changes=${has_changes}" >> "${GITHUB_OUTPUT}"
+          {
+            echo "### \`${ROOT_DIR}\` — changes: ${has_changes}"
+            echo '```'
+            tofu show -no-color tfplan | tail -c 60000
+            echo '```'
+          } >> "${GITHUB_STEP_SUMMARY}"
+          if [ "${GITHUB_EVENT_NAME}" = "schedule" ] && [ "${has_changes}" = "true" ]; then
+            echo "::error::${ROOT_DIR} has drifted from main; review the plan in the job summary."
+            exit 1
+          fi
+
+      # The plan is encrypted with the state KMS key, so the artifact is useless without the apply role.
+      - name: Keep the plan for the apply
+        if: inputs.apply && steps.plan.outputs.has_changes == 'true'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: tfplan-${{ inputs.root }}
+          path: ${{ env.ROOT_DIR }}/tfplan
+          retention-days: 1
+          if-no-files-found: error
+
+  apply:
+    name: apply
+    needs: plan
+    if: inputs.apply && needs.plan.outputs.has_changes == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment: ${{ inputs.environment }}
+    concurrency:
+      group: apply-${{ inputs.root }}
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: opentofu/setup-opentofu@a1320f892987e89d278cc92dc5adc984fb93aca4 # v2.0.2
+        with:
+          tofu_version_file: .opentofu-version
+          tofu_wrapper: false
+
+      - uses: ./.github/actions/aws-oidc
+        with:
+          role-arn: ${{ vars.AWS_ROLE_ARN }}
+          region: ${{ vars.AWS_REGION }}
+
+      - name: Load secrets
+        env:
+          PREFIX: /${{ github.event.repository.name }}/${{ inputs.secret_scope }}
+          SSM_ENV: ${{ inputs.ssm_env }}
+        run: |
+          set -euo pipefail
+          while IFS='=' read -r name parameter; do
+            [ -z "${name}" ] && continue
+            value=$(aws ssm get-parameter --name "${PREFIX}/${parameter}" --with-decryption \
+              --query Parameter.Value --output text)
+            echo "::add-mask::${value}"
+            echo "${name}=${value}" >> "${GITHUB_ENV}"
+          done <<< "${SSM_ENV}"
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: tfplan-${{ inputs.root }}
+          path: ${{ env.ROOT_DIR }}
+
+      - name: Apply the reviewed plan
+        working-directory: ${{ env.ROOT_DIR }}
+        run: |
+          set -euo pipefail
+          tofu init -lockfile=readonly
+          tofu apply -lock-timeout=5m tfplan
