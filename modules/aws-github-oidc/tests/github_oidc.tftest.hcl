@@ -7,7 +7,12 @@ mock_provider "aws" {
 }
 
 variables {
-  repository = "ExampleOrg/example-infra"
+  repository = {
+    owner    = "ExampleOrg"
+    owner_id = "123456"
+    name     = "example-infra"
+    id       = "456789"
+  }
   roles = {
     example-plan = {
       subjects    = ["pull_request"]
@@ -44,16 +49,45 @@ run "creates_provider_and_one_role_per_entry" {
   }
 }
 
-run "trust_is_pinned_to_exact_subjects" {
+run "trust_is_pinned_to_exact_immutable_subjects" {
   command = plan
 
   assert {
-    condition = contains(
-      flatten([for c in data.aws_iam_policy_document.trust["example-apply"].statement[0].condition : c.values if c.variable == "token.actions.githubusercontent.com:sub"]),
-      "repo:ExampleOrg/example-infra:environment:production",
-    )
-    error_message = "Apply role must trust only its environment's subject."
+    condition = flatten([
+      for c in data.aws_iam_policy_document.trust["example-apply"].statement[0].condition : c.values
+      if c.variable == "token.actions.githubusercontent.com:sub" && c.test == "StringEquals"
+    ]) == ["repo:ExampleOrg@123456/example-infra@456789:environment:production"]
+    error_message = "Apply role must trust only its environment's immutable subject."
   }
+}
+
+run "sessions_must_name_their_run" {
+  command = plan
+
+  assert {
+    condition = alltrue([
+      for name in keys(var.roles) : anytrue([
+        for c in data.aws_iam_policy_document.trust[name].statement[0].condition :
+        c.variable == "sts:RoleSessionName" && c.test == "StringLike" && length(c.values) == 1 && contains(c.values, "gh-*-*")
+      ])
+    ])
+    error_message = "Every role must require the gh-<run_id>-<run_attempt> session name."
+  }
+}
+
+run "rejects_non_numeric_ids" {
+  command = plan
+
+  variables {
+    repository = {
+      owner    = "ExampleOrg"
+      owner_id = "ExampleOrg"
+      name     = "example-infra"
+      id       = "456789"
+    }
+  }
+
+  expect_failures = [var.repository]
 }
 
 run "rejects_wildcard_subjects" {
