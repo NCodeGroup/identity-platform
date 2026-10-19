@@ -39,6 +39,11 @@ run "unknown_recipients_are_dropped" {
     condition     = cloudflare_email_routing_catch_all.this.matchers[0].type == "all" && cloudflare_email_routing_catch_all.this.actions[0].type == "drop"
     error_message = "Mail to any other address must be dropped, never forwarded."
   }
+
+  assert {
+    condition     = cloudflare_email_routing_settings.this.support_subaddress == false
+    error_message = "Plus-addressed variants of an alias must not be delivered."
+  }
 }
 
 run "rejects_full_addresses_as_aliases" {

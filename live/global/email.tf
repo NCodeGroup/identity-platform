@@ -13,6 +13,9 @@ locals {
 # bootstrap's DMARC record stays at p=reject.
 resource "cloudflare_email_routing_settings" "this" {
   zone_id = local.zone_id
+
+  # No plus-addressing: only the exact aliases receive mail; alias+anything@ falls through to the catch-all drop.
+  support_subaddress = false
 }
 
 resource "cloudflare_email_routing_dns" "this" {

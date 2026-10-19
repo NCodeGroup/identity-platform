@@ -38,7 +38,9 @@ foreach ($scope in 'plan', 'global') {
 }
 ```
 
-After the first apply, Cloudflare emails the mailbox a verification link; forwarding starts once it is clicked.
+Cloudflare forwards only to a verified mailbox, so the first apply creates the destination and then fails to create
+the forwarding rules (`Destination address is not verified`). Click the verification link Cloudflare emails to the
+mailbox, then re-run the `deploy` run (**Re-run all jobs**, so it plans again) and approve it.
 
 ## Running it locally
 
