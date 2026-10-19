@@ -41,6 +41,12 @@ locals {
   ]))
 }
 
+# Universal SSL publishes hidden CAA records for Cloudflare's own CAs, which would make the CAA records below incomplete.
+resource "cloudflare_universal_ssl_setting" "this" {
+  zone_id = cloudflare_zone.this.id
+  enabled = false
+}
+
 resource "cloudflare_dns_record" "caa" {
   for_each = { for r in local.caa_records : "${r.tag}:${r.value}" => r }
 

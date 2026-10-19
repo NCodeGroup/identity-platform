@@ -6,6 +6,10 @@ A Cloudflare DNS zone with the records every zone should have from day one
 - **DNSSEC** on by default. After the zone is active, publish the DS record from the `dnssec` output at the registrar.
 - **CAA** records allow only the listed certificate authorities (Let's Encrypt by default) for both `issue` and
   `issuewild`, with an optional `iodef` address for violation reports.
+- **Universal SSL** is off, always. While it is on, Cloudflare publishes hidden CAA records for its own CAs beside the
+  listed ones, so the CAA records would no longer be the only CAs that can issue for the zone. A DNS-only host gets
+  its certificate elsewhere and never uses it. A host proxied through Cloudflare needs its own edge certificate: an
+  advanced certificate from a CA in `caa_issuers`, or an uploaded one.
 - **DMARC** at `p=reject` with strict alignment, so nobody can send mail as the domain. Add a report address with
   `dmarc_report_email`.
 - Records carry `record_comment` — pass the `comment` output of the [`tags`](../tags) module, since Cloudflare's Free
@@ -43,13 +47,13 @@ output "registrar" {
 | Name | Version |
 | ---- | ------- |
 | terraform | >= 1.13.0 |
-| cloudflare | >= 5.0, < 6.0 |
+| cloudflare | >= 5.13, < 6.0 |
 
 ## Providers
 
 | Name | Version |
 | ---- | ------- |
-| cloudflare | >= 5.0, < 6.0 |
+| cloudflare | >= 5.13, < 6.0 |
 | terraform | n/a |
 
 ## Resources
@@ -58,6 +62,7 @@ output "registrar" {
 | ---- | ---- |
 | [cloudflare_dns_record.caa](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/dns_record) | resource |
 | [cloudflare_dns_record.dmarc](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/dns_record) | resource |
+| [cloudflare_universal_ssl_setting.this](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/universal_ssl_setting) | resource |
 | [cloudflare_zone.this](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/zone) | resource |
 | [cloudflare_zone_dnssec.this](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/zone_dnssec) | resource |
 | [terraform_data.deletion_guard](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
