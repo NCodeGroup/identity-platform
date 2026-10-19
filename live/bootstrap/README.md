@@ -47,6 +47,10 @@ Decisions behind it:
 4. Have the **state passphrase** ready: at least 32 random characters, kept in the owner's password manager. It
    encrypts this root's state and plans (this root creates the KMS key everything else uses, so it can't use it
    itself). Use the same passphrase on every run; without it the state can't be read.
+5. Create the short-lived **GitHub bootstrap token** — fine-grained, only this repository, _Administration_,
+   _Environments_, and _Variables_ read/write, expiring tomorrow, approved by an organization owner — as in runbook
+   section
+   [6. Run the bootstrap stack](https://github.com/NCodeGroup/Identity/blob/main/docs/platform-bootstrap.md#6-run-the-bootstrap-stack).
 
 Set the credentials for **this shell only** — never in a file:
 
@@ -72,11 +76,13 @@ guard keep safe.
    Set-Content backend_override.tf "terraform {`n  backend `"local`" {}`n}"
    ```
 
-2. **Create everything.**
+2. **Create everything** — from a saved plan, so what you apply is exactly what you reviewed. Expect only additions
+   plus one import (the repository), and nothing changed or destroyed:
 
    ```powershell
    tofu init
-   tofu apply
+   tofu plan -out bootstrap.tfplan
+   tofu apply bootstrap.tfplan
    ```
 
    The first apply imports the repository you created by hand (runbook section
@@ -92,10 +98,13 @@ guard keep safe.
    ```powershell
    Remove-Item backend_override.tf
    tofu init -migrate-state
-   Remove-Item terraform.tfstate, terraform.tfstate.backup
+   Remove-Item terraform.tfstate*, bootstrap.tfplan
    ```
 
-4. **Verify.** `tofu plan` reports no changes, and the state object exists in the bucket.
+4. **Verify.** `tofu plan` reports no changes, and the state object exists in the bucket. Until the domain is
+   delegated and its DS record published (runbook section 7), the plan shows one in-place update of
+   `cloudflare_zone_dnssec` from `pending` to `active` — don't apply it; it disappears once Cloudflare sees the DS
+   record.
 
 5. **Revoke** the Cloudflare bootstrap token and the GitHub token, and close the shell.
 
