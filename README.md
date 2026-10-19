@@ -32,6 +32,17 @@ platform grows
 | [`cloudflare-zone`](modules/cloudflare-zone)     | DNS zone with DNSSEC, CAA, and DMARC                                   |
 | [`github-repository`](modules/github-repository) | Hardened repository: rulesets, Actions policy, deployment environments |
 
+### Live roots
+
+| Root                               | Applied by                               | Manages                                                     |
+| ---------------------------------- | ---------------------------------------- | ----------------------------------------------------------- |
+| [`live/bootstrap`](live/bootstrap) | the owner, by hand                       | State, backups, CI roles and tokens, zone, repository rules |
+| [`live/global`](live/global)       | CI, through the `production` environment | Inbound email; later, records for each environment          |
+
+The [`deploy`](.github/workflows/deploy.yml) workflow plans every CI root on pull requests, applies the reviewed plan
+after a merge to `main` (production applies wait for approval), and runs a daily drift check. CI authenticates to AWS
+through GitHub OIDC with run-named sessions and reads vendor tokens from SSM — there are no stored secrets.
+
 ## Environments
 
 The platform has exactly these environments: **`production`** (every customer tenant), **`lab`** (the owner's private
