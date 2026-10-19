@@ -31,6 +31,11 @@ run "zone_is_signed_and_hardened" {
   }
 
   assert {
+    condition     = cloudflare_universal_ssl_setting.this.enabled == false
+    error_message = "Universal SSL must be off, or Cloudflare publishes CAA records for its own CAs beside the configured ones."
+  }
+
+  assert {
     condition     = cloudflare_dns_record.dmarc[0].content == "\"v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s; rua=mailto:dmarc@example.com\""
     error_message = "DMARC must reject unauthenticated mail for the apex and subdomains."
   }
