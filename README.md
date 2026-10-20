@@ -72,13 +72,28 @@ and staging are tenants on production — those words never name a platform envi
 
 ## Working locally
 
-Install the tools (Windows shown; `brew install` works the same on macOS):
+Install the tools — on Windows with winget and [uv](https://docs.astral.sh/uv/):
 
 ```powershell
-scoop install tenv terraform-docs gitleaks
-pipx install pre-commit
+winget install --exact Tofuutils.Tenv Terraform-docs.Terraform-docs Gitleaks.Gitleaks astral-sh.uv
+uv tool install pre-commit --python 3.14   # uv-managed Python: PyYAML ships no Python 3.15 wheels, so 3.15 needs a C compiler
+uv tool update-shell                        # puts uv's tool directory on PATH
+```
+
+On macOS: `brew install tenv terraform-docs gitleaks pre-commit`.
+
+The installers change the user `PATH`, which running shells don't see — and VS Code terminals inherit it from VS Code,
+so they don't see it until VS Code restarts. Reload it in the current PowerShell session instead:
+
+```powershell
+$env:PATH = [Environment]::GetEnvironmentVariable('Path', 'User') + ';' + [Environment]::GetEnvironmentVariable('Path', 'Machine')
+```
+
+Then, in the repository:
+
+```powershell
 tenv tofu install      # the version in .opentofu-version, signature-verified
-pre-commit install     # gitleaks, tofu fmt, and terraform-docs on every commit
+pre-commit install     # gitleaks, tofu fmt, and terraform-docs on every commit; strips agent co-author trailers
 ```
 
 Check a component or root the way CI does:
@@ -112,6 +127,14 @@ Two `tofu test` limits shape the tests:
   its imports behind a variable its tests set to `false` (`adopt_existing_repository` in `live/bootstrap`).
 - A mocked attribute of nested type needs every one of its fields, or OpenTofu rejects the mock with
   "Invalid mock/override field".
+
+## Working with agents
+
+Coding agents start from [AGENTS.md](AGENTS.md) and [`.github/copilot-instructions.md`](.github/copilot-instructions.md).
+Multi-step changes run as plan-and-execute: Claude Opus plans into `PLAN.md`, a lower-cost Copilot model executes it
+one verified step at a time, and Opus re-plans any step that comes back
+([ADR-0170](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0170-agent-work-is-planned-on-a-frontier-model-and-executed-step-by-step-on-a-cheaper-one.md)).
+Agents validate locally only; they never plan or apply against live state.
 
 ## Building the platform from zero
 
