@@ -132,14 +132,15 @@ Two `tofu test` limits shape the tests:
 ## Releasing
 
 A component change reaches a live root in two pull requests with a release between them: the change merges, `main` is
-tagged, and a second pull request moves the live roots to the tag. Changes outside `modules/` — docs, CI, the live
-roots themselves — need no release.
+tagged, and a second pull request moves the live roots to the tag. Only a change to a component's `.tf` files needs a
+release; everything else — docs, CI, the live roots, and a component's README or tests — ships with the next one.
 
 1. **Merge the component change** in its own pull request: `feat(<component>): …` or `fix(<component>): …`, with `!`
    when it breaks consumers.
-2. **Choose the version** from what changed under `modules/` since the last tag — not from pull request titles. List
-   it with `git log --oneline <last tag>..main -- modules`. The repository has one version for every component. Before
-   1.0, a breaking change bumps the minor version (`v0.3.0` → `v0.4.0`) and anything else bumps the patch (`v0.3.1`).
+2. **Choose the version** from what changed in the components' `.tf` files since the last tag — not from pull request
+   titles. List it with `git log --oneline <last tag>..main -- 'modules/*.tf'`. The repository has one version for every
+   component. Before 1.0, a breaking change bumps the minor version (`v0.3.0` → `v0.4.0`) and anything else bumps the
+   patch (`v0.3.1`).
    Breaking means a consumer must act to adopt the release: a removed or reshaped input or output, a new required
    input, a forced resource replacement, a raised provider or OpenTofu floor, or a new permission for the credentials
    that apply it.
