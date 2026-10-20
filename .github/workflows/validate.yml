@@ -27,6 +27,10 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Agent customization parity and tests
+        shell: pwsh
+        run: ./build/tests/agent-customizations.tests.ps1
+
       - uses: opentofu/setup-opentofu@a1320f892987e89d278cc92dc5adc984fb93aca4 # v2.0.2
         with:
           tofu_version_file: .opentofu-version
