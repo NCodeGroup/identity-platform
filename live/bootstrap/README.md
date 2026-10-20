@@ -145,8 +145,8 @@ apply, by design.
 Like every root, this one consumes components only by released version — pinned to a protected, immutable release tag
 (`?ref=vX.Y.Z`), never by local path; CI rejects anything else
 ([ADR-0133](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0133-we-ship-and-run-the-same-deployment-artifacts.md),
-the member rule). A component change therefore reaches this root in two steps: release it, then bump the `ref` here
-(Dependabot proposes the bump).
+the member rule). A component change therefore reaches this root in two steps: release it, then bump the `ref` here —
+see [Releasing](../../README.md#releasing).
 
 <!-- BEGIN_TF_DOCS -->
 <!-- prettier-ignore-start -->

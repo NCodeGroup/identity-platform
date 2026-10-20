@@ -69,7 +69,7 @@ any step that needs a decision comes back to Opus to be re-planned.
   `tofu plan` or anything else that reaches live state. A `run` block that asserts the new behavior makes the best
   check: it fails until the step is done.
 - **Split across releases.** A change to a component and its adoption by a live root are separate plans and pull
-  requests, with a release tag between them.
+  requests, with a release tag between them ([Releasing](README.md#releasing)).
 - **`PLAN.md` is transient:** the pull-request protocol in [`copilot-instructions.md`](.github/copilot-instructions.md)
   promotes its Decisions and deletes it before the pull request merges.
 - The agents, prompts, and skills under `.github/` are **generated** (the installer command is in ADR-0170); change the
