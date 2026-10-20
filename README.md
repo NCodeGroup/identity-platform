@@ -83,6 +83,9 @@ uv tool update-shell                        # puts uv's tool directory on PATH
 
 On macOS: `brew install tenv terraform-docs gitleaks pre-commit`.
 
+PowerShell 7+ (`pwsh`) is also required for the agent-customization checks. The GitHub-hosted Ubuntu runner already
+provides it.
+
 The installers change the user `PATH`, which running shells don't see — and VS Code terminals inherit it from VS Code,
 so they don't see it until VS Code restarts. Reload it in the current PowerShell session instead:
 
@@ -100,6 +103,8 @@ pre-commit install     # gitleaks, tofu fmt, and terraform-docs on every commit;
 Check a component or root the way CI does:
 
 ```powershell
+pwsh -NoProfile -File .\build\tests\agent-customizations.tests.ps1
+
 tofu fmt -check -recursive
 tofu -chdir=modules/tags init -backend=false
 tofu -chdir=modules/tags validate
@@ -179,6 +184,12 @@ Multi-step changes run as plan-and-execute: Claude Opus plans into `PLAN.md`, a 
 one verified step at a time, and Opus re-plans any step that comes back
 ([ADR-0170](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0170-agent-work-is-planned-on-a-frontier-model-and-executed-step-by-step-on-a-cheaper-one.md)).
 Agents validate locally only; they never plan or apply against live state.
+
+Both VS Code **Local** prompts and **Copilot** skills are supported intentionally. The `validate` workflow checks that
+the two formats stay synchronized. Copilot skills use the model selected for the session; select the planning or review
+model yourself. Do not bulk-convert the repository prompts in the migration UI: their skills already exist. See
+[Local and Copilot customizations](AGENTS.md#local-and-copilot-customizations) for model selection, validation, and
+migration-banner guidance.
 
 ## Building the platform from zero
 
