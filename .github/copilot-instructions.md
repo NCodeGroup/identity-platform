@@ -76,7 +76,10 @@ change under `live/` the **expected deploy plan** (`N to add, N to change, N to 
 `Refs: NCodeGroup/Identity backlog <ID>` when it serves a backlog item.
 
 A component change reaches a live root only through a release: one pull request changes `modules/`, the release is
-tagged `vX.Y.Z`, and a separate pull request moves the live roots' `?ref=` to it (`chore(<root>): consume vX.Y.Z`).
+tagged `vX.Y.Z`, and a separate pull request moves the live roots' `?ref=` to it (`chore(<root>): consume vX.Y.Z`). The
+steps, including how to choose the version, are in the README's [Releasing](../README.md#releasing) section. A release
+tag is permanent — the `release-tags` ruleset blocks moving or deleting it — so create or push one only when the user
+asks.
 
 When the user authorizes opening or updating a pull request, first:
 
