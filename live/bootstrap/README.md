@@ -38,8 +38,9 @@ Decisions behind it:
 1. Finish the [runbook](https://github.com/NCodeGroup/Identity/blob/main/docs/platform-bootstrap.md) sections
    [1. Domain registrar](https://github.com/NCodeGroup/Identity/blob/main/docs/platform-bootstrap.md#1-domain-registrar-porkbun)
    through
-   [5. OCI](https://github.com/NCodeGroup/Identity/blob/main/docs/platform-bootstrap.md#5-oci-the-lab) — registrar,
-   GitHub, Cloudflare bootstrap token, AWS account, OCI. This README is the runbook's section 6.
+   [4. AWS](https://github.com/NCodeGroup/Identity/blob/main/docs/platform-bootstrap.md#4-aws-state-backups-vendor-tokens)
+   — registrar, GitHub, Cloudflare bootstrap token, AWS account. This root doesn't use OCI, so section 5 can wait for
+   the lab. This README is the runbook's section 6.
 2. Install OpenTofu through [tenv](https://github.com/tofuutils/tenv); in the repository run `tenv tofu install`, which
    installs the version in `.opentofu-version`.
 3. Put the platform AWS account ID into `terraform.tfvars` as `aws_account_id` and commit it. It is not a secret, and the
