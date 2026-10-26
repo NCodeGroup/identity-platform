@@ -1,0 +1,38 @@
+---
+description: The plan-then-execute workflow and base conventions from the project template
+applyTo: "**"
+---
+
+# Project Template Rules
+
+These rules come from the project template. Template updates replace this file, so never edit it: to change a rule for this project, override it in `AGENTS.md` or in a project instruction file `AGENTS.md` lists. Where they differ, the project's instruction wins.
+
+## Plan-then-execute
+
+Work in this repository is planned by a frontier model and executed by cheaper ones, one verified step at a time.
+
+- `PLAN.md` at the repository root is the handoff between them. The planning commands (`/plan-feature`, `/plan-bugfix`, …) write it in a fixed shape: an optional `Issue:` line under the title, then Goal, Context for the executor, Decisions, Out of scope, Steps and Review checklist. It is a local working file, gitignored: never commit, stage or push it.
+- When the request names an issue, the plan records it on its `Issue:` line (`#42`, or `owner/repo#42` for another repository), and the planning command posts the finished plan to that issue once, as one collapsed comment; a re-plan that changes the Decisions or adds or removes steps posts a short follow-up. Only the planning session calls `gh`; an executor never does. A plan for no issue has no `Issue:` line and posts nothing.
+- In Claude Code, each plan lives in its own git worktree, so several sessions can work on different plans at once: the planning command creates `.claude/worktrees/<name>/` on the branch `worktree-<name>` and keeps `PLAN.md` there, untracked, and the commands that execute, re-plan or review the plan work in that worktree. Its root is the plan's repository root. To continue the plan in another tool, open that folder.
+- Each step is a `### [ ] N. Title` heading with Files, Change, Pattern and `- Done when:` lines. Markers: `[ ]` pending, `[x]` done, `[?]` escalated, `[!]` failed.
+- A Done-when command is one PowerShell command, run from the repository root, that exits 0 only when its step is done. The build and test commands are in `AGENTS.md`.
+- An executor changes only the files its step lists, runs the step's Done-when command, and marks the step `[x]` when it passes. When a step needs a decision the plan didn't make, it reverts its partial edits, marks the step `[?]`, adds an `- Escalation:` line and stops — it never improvises a design.
+- A finished step is committed as `Plan step N: <title>`, staging only the files the step lists (never `git add -A`, never `PLAN.md`); a re-planned step is recorded as an empty commit, `Re-plan step N: <title>`.
+- The workflow commands are in Claude Code (`.claude/commands/`), VS Code's Copilot Chat (`.github/prompts/` and `.github/agents/`) and Copilot CLI (`.github/skills/`), and `PLAN.md` is the only state they share: any of them can plan, execute, re-plan or review the same plan, whichever wrote the steps before.
+- Never push, force-push or open a pull request unless asked. `git push` always asks for approval. Before a push you were asked for, list what the unpushed commits contain (`git log --stat @{u}..`) and stop on anything unexpected, such as `PLAN.md`, secrets or large files.
+- Before that push, retire a finished plan: when every step in `PLAN.md` is marked `[x]`, the review's fix steps included, delete `PLAN.md`, so no finished plan is left in the checkout. When a step is still open, keep `PLAN.md` and say which steps remain before you push. When it has an `Issue:` line, draft the pull request description from it before deleting it: two to five lines summarizing its steps and Decisions, then `Closes <issue reference>` on a line of its own, such as `Closes #42`. Use it when you open the pull request, or put it in the open one with `gh pr edit <number> --body-file <file>`; when you weren't asked for a pull request, give it in your reply.
+- Once the plan's work is pushed or merged, `/finish-plan` closes it: it deletes `PLAN.md`, fast-forwards the default branch from `origin` and deletes the plan's merged branch, and in Claude Code removes the plan's worktree. It never pushes.
+- Dependabot opens a pull request each week for newer versions of dependencies and CI actions; CI tests it, and a person reviews and merges it.
+
+## Conventions
+
+- UTF-8 without BOM and LF line endings; follow `.editorconfig`.
+- Secrets never enter the repository or a prompt: `.env` files and `secrets/` are gitignored, and Claude Code is denied reading them.
+- Commits and pull requests record the people who wrote them: never add a `Co-authored-by:` trailer naming an AI agent (Copilot, Claude or any other), a `Claude-Session:` trailer, or a "Generated with" line. Claude Code's `attribution` setting and VS Code's `git.addAICoAuthor` are off in this repository, and `.githooks/commit-msg` strips any that slip through. CI runs `.template/Test-CommitAttribution.ps1` on every pull request, merge queue entry and push to the default branch, and fails on a commit authored, committed or co-authored by an AI agent; to fix one, re-author it: `git rebase <base> --exec "git commit --amend --no-edit --reset-author"`.
+- Pull requests: `gh pr create`, only when asked.
+
+## Template Files and Project Files
+
+- The project template owns these files, and template updates replace them, discarding any edit: this file, `.template/`, `.template-version`, `.githooks/commit-msg`, `CLAUDE.md`, `.claude/agents/plan-executor.md`, the generated commands in `.claude/commands/`, the generated agents in `.github/agents/` and prompt files in `.github/prompts/`, the generated skills in `.github/skills/`. `.copier-answers.yml` is Copier's. Never edit any of them. A command, prompt file, skill or agent the project adds to those folders under a name the template doesn't use is the project's, and updates leave it alone.
+- Every other file belongs to the project, and can be edited. Git and editor settings, CI, Dependabot and Claude Code permissions also take later template changes, merged with the project's edits; the rest — `AGENTS.md`, `README.md` and the project's own files — template updates never touch.
+- To add or change an instruction, edit `AGENTS.md`, or add a file and list it there: `.github/instructions/<name>.instructions.md` for every agent, or `.claude/rules/<name>.md` for Claude Code only.

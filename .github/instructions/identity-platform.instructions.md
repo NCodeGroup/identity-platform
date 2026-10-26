@@ -1,9 +1,14 @@
-# identity-platform — Copilot instructions
+---
+applyTo: "**"
+description: "identity-platform rules — design posture, security defaults, no live infrastructure, where knowledge lives, commit attribution, and pull requests."
+---
+
+# identity-platform — agent instructions
 
 Infrastructure as code for the hosted [NCode.Identity](https://github.com/NCodeGroup/Identity) platform: reusable
 OpenTofu components under `modules/` and the live roots of the platform's own environments under `live/`. Orientation,
-the local checks, and the plan-and-execute workflow are in [`AGENTS.md`](../AGENTS.md); the OpenTofu conventions are in
-[`instructions/opentofu.instructions.md`](instructions/opentofu.instructions.md), auto-applied to `*.tf` and
+the local checks, and the plan-and-execute workflow are in [`AGENTS.md`](../../AGENTS.md); the OpenTofu conventions are in
+[`opentofu.instructions.md`](opentofu.instructions.md), auto-applied to `*.tf` and
 `*.tftest.hcl`.
 
 ## Design posture
@@ -43,7 +48,7 @@ Validate locally with `tofu fmt`, `tofu init -backend=false`, `tofu validate`, `
 `tofu providers lock`, and `terraform-docs` — nothing else. **Never** run `tofu plan`, `apply`, `destroy`, `import`,
 `refresh`, `state`, `taint`, or `force-unlock`, or `tofu init` against a backend: those need the owner's credentials and
 act on live state. CI plans every pull request and applies after merge through the `production` environment's
-approval; [`live/bootstrap`](../live/bootstrap) is applied by the owner, by hand. Never write a credential, token, or
+approval; [`live/bootstrap`](../../live/bootstrap) is applied by the owner, by hand. Never write a credential, token, or
 plan or apply output into the repository.
 
 ## Where knowledge lives
@@ -54,17 +59,18 @@ This repository keeps no ADRs or backlog of its own. The platform's **decisions*
 example `F46`, `F48`). Durable knowledge is captured in versioned files, never left only in an agent's volatile memory
 or chat history
 ([ADR-0008](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0008-conventions-and-lessons-live-in-the-repository.md)):
-a convention or recurring gotcha goes into this file, [`AGENTS.md`](../AGENTS.md), the scoped instructions, or the
+a convention or recurring gotcha goes into this file, [`AGENTS.md`](../../AGENTS.md), the scoped instructions, or the
 component's README; a non-obvious decision or pending item goes into the library repository as its own change.
 
 ## Commit attribution
 
-**Never add a `Co-authored-by:` trailer naming an agent account** (`Copilot`, `copilot-swe-agent[bot]`, or any other
-tooling identity) to a commit message. A commit records the **people** who authored it; the repository host reads that
-trailer as authorship, and a squash merge carries the branch commits' co-author trailers onto `main`, where removing
-them means rewriting published history. [`.githooks/strip-agent-co-author.sh`](../.githooks/strip-agent-co-author.sh)
-strips such trailers through pre-commit's `commit-msg` stage as a safety net, but it is installed per clone and must
-not be relied on — do not generate the trailer in the first place. See
+**Never add agent attribution to a commit or pull request**: no `Co-authored-by:` trailer naming an agent (`Copilot`,
+`copilot-swe-agent[bot]`, Claude, or any other tooling identity), no `Claude-Session:` trailer, and no "Generated with"
+line. A commit records the **people** who authored it; the repository host reads a co-author trailer as authorship,
+and a squash merge carries the branch commits' trailers onto `main`, where removing them means rewriting published
+history. The project template's [`.githooks/commit-msg`](../../.githooks/commit-msg) strips them through pre-commit's
+`commit-msg` stage as a safety net, and the `ci` workflow's commit-attribution job fails on a commit authored,
+committed, or co-authored by an agent — do not generate the attribution in the first place. See
 [ADR-0128](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0128-commits-are-attributed-to-people-not-agents.md).
 
 ## Pull requests
@@ -77,7 +83,7 @@ change under `live/` the **expected deploy plan** (`N to add, N to change, N to 
 
 A component change reaches a live root only through a release: one pull request changes `modules/`, the release is
 tagged `vX.Y.Z`, and a separate pull request moves the live roots' `?ref=` to it (`chore(<root>): consume vX.Y.Z`). The
-steps, including how to choose the version, are in the README's [Releasing](../README.md#releasing) section. A release
+steps, including how to choose the version, are in the README's [Releasing](../../README.md#releasing) section. A release
 tag is permanent — the `release-tags` ruleset blocks moving or deleting it — so create or push one only when the user
 asks.
 
@@ -90,4 +96,4 @@ When the user authorizes opening or updating a pull request, first:
 2. **Persist lessons.** Promote every lesson learned into durable content, as described under
    [Where knowledge lives](#where-knowledge-lives).
 3. **Drain volatile memory.** No durable knowledge may remain only in agent memory or chat history.
-4. **Pass the local checks** in [`AGENTS.md`](../AGENTS.md#local-checks) — the same checks the `validate` workflow runs.
+4. **Pass the local checks** in [`AGENTS.md`](../../AGENTS.md#local-checks) — the same checks the `validate` workflow runs.
