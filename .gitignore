@@ -1,3 +1,28 @@
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+*.swp
+.vs/
+.idea/
+
+# Claude Code: personal settings and worktrees
+.claude/settings.local.json
+.claude/worktrees/
+CLAUDE.local.md
+
+# Leftovers from `copier update --conflict rej`
+*.rej
+
+# The plan in progress: a local working file, never committed
+PLAN.md
+
+# Secrets
+.env
+.env.*
+!.env.example
+secrets/
+
+# Kept from this repository's own .gitignore when it adopted the project template
 # OpenTofu working directories and state — state lives in the remote backend, never in Git
 .terraform/
 *.tfstate

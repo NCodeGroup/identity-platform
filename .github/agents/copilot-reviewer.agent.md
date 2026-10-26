@@ -1,6 +1,6 @@
 ---
 name: Copilot Reviewer
-description: Review the work against PLAN.md and queue fix steps for a lower-cost Copilot model
+description: Review the work against PLAN.md and queue fix steps for Claude Sonnet 5.5
 argument-hint: Optional base branch or commit to diff against
 model: 'Claude Sonnet 5.5 (copilot)'
 tools: ['read', 'search', 'edit', 'execute']
@@ -9,7 +9,7 @@ handoffs:
     agent: Copilot Implementer
     prompt: Execute the next unchecked step in PLAN.md.
     send: true
-    model: 'Auto (copilot)'
+    model: 'Claude Sonnet 5.5 (copilot)'
   - label: Re-plan with the planner
     agent: Copilot Planner
     prompt: Re-plan the remaining work in PLAN.md based on the review findings above.
@@ -28,3 +28,4 @@ If empty, use the parent of the first commit whose message starts with "Plan ste
 5. Run the test suite and the checks listed under Context for the executor.
 6. Report findings as a table: severity (blocker, should-fix, nit), file and line, problem, fix.
 7. For every blocker and should-fix, append a new step to the end of the Steps section of `PLAN.md`, numbered in sequence and in the same format as the existing steps (`### [ ] N. …` with Files, Change and a Done-when command), so the executor model can fix it. Change nothing else in the repository.
+8. When the review found no blocker or should-fix, end by saying the plan is done: once its commits are pushed or merged, finish-plan retires it and deletes its branch. When `PLAN.md` has an `Issue:` line, also say that the pull request description gets `Closes <issue reference>` and a two-to-five-line summary of the plan's steps and Decisions.

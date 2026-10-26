@@ -5,6 +5,10 @@ Infrastructure as code for the hosted [NCode.Identity](https://github.com/NCodeG
 repository is public on purpose and never holds credentials, state, plans, or backups. The [README](README.md) is the
 full description — layout, components, live roots, environments, conventions, and local setup.
 
+## Project Template
+
+- @.github/instructions/project-template.instructions.md — the plan-then-execute workflow and base conventions, from the project template. Template updates replace it; never edit it. Where this file or a file it lists says otherwise, the project's instruction wins.
+
 ## Layout
 
 | Path                    | Holds                                                                                           |
