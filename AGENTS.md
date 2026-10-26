@@ -24,8 +24,10 @@ this repository's win.
 | ----------------------- | ----------------------------------------------------------------------------------------------- |
 | `modules/<component>/`  | One concern each, no platform-specific defaults, tested with mocked providers                   |
 | `live/<root>/`          | Roots for the platform's environments; `bootstrap` is applied by hand, `global` by CI           |
-| `.github/workflows/`    | `validate` (required on every pull request), `deploy` (plan on pull request, apply after merge) |
+| `.github/workflows/`    | `validate` (required), `deploy` (plan on pull request, apply after merge), `ci` (attribution)   |
 | `.github/instructions/` | Scoped coding conventions, auto-applied by path                                                 |
+| `.claude/`              | Claude Code commands, `plan-executor` agent, and settings; template-owned except settings       |
+| `.template/`            | The project template's `Update-Project.ps1` and `Test-CommitAttribution.ps1`; template-owned    |
 
 ## Rules and conventions
 
