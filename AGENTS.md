@@ -75,9 +75,10 @@ any step that needs a decision comes back to Opus to be re-planned.
   step's check, and re-plans escalations itself — its agent file grants the subagent tool, so nothing needs enabling)
   or step through with **Execute next step** and **Re-plan with the planner**. Finish with **Review the work** (Sonnet)
   and execute the fix steps it queues. The planning prompts — `/plan-feature`, `/plan-bugfix`, `/plan-refactor`,
-  `/plan-tests`, `/plan-migration`, `/plan-performance`, `/plan-security`, `/plan-docs`, and `/handoff-plan` after
-  planning in conversation — select Opus themselves but run in the built-in Agent, which has no handoff buttons:
-  continue by picking **Copilot Orchestrator** with Opus and asking it to execute `PLAN.md`.
+  `/plan-tests`, `/plan-migration`, `/plan-performance`, `/plan-security`, `/plan-docs`, `/plan-issue`,
+  `/plan-template-update`, and `/handoff-plan` after planning in conversation — select Opus themselves but run in the
+  built-in Agent, which has no handoff buttons: continue by picking **Copilot Orchestrator** with Opus and asking it to
+  execute `PLAN.md`.
 - **Copilot CLI:** start on Opus — `copilot --model claude-opus-5.5 --reasoning-effort high` — then `/plan-feature …`,
   `/orchestrate-plan` (delegates each step to the `plan-executor` agent on Sonnet), and `/review-plan-diff`.
 - **VS Code (session target Copilot):** use the same skills as Copilot CLI. Select **Claude Opus 5.5** before planning
@@ -89,6 +90,9 @@ any step that needs a decision comes back to Opus to be re-planned.
 - **Claude Code:** a planning command (`/plan-feature …`, `/plan-migration …`) plans in a worktree under
   `.claude/worktrees/<name>/`; `/orchestrate-plan` runs each step on the `plan-executor` subagent (Sonnet 5.5),
   `/review-plan-diff` reviews, and `/finish-plan` cleans up after the merge. See [`CLAUDE.md`](CLAUDE.md).
+- **Issues and template updates:** `/plan-issue #42` plans one issue, choosing the kind of plan from its labels;
+  `/triage-issues <filter>` lists the open issues ready to plan and changes nothing; `/plan-template-update` plans the
+  next project-template update from a trial run on a clone. The commands exist in all three runtimes.
 - **Work on a branch.** The orchestrator commits a checkpoint per step; the squash merge folds them, and the pull
   request title and body supply the commit on `main`.
 - **Done-when commands** prove one step with a local check — for example `tofu -chdir=modules/<name> test` after a
@@ -107,7 +111,7 @@ any step that needs a decision comes back to Opus to be re-planned.
 
 ### Local and Copilot customizations
 
-**Both session targets are intentionally supported.** The 17 workflow pairs under
+**Both session targets are intentionally supported.** The 20 workflow pairs under
 [`.github/prompts/`](.github/prompts/) and [`.github/skills/`](.github/skills/) are runtime adapters, not unfinished
 migration work. Local prompts retain their agent/model/tool selections; Copilot skills use the session model.
 Duplicate commands in Local's slash menu and automatic skill selection are accepted behaviors. Skill descriptions
