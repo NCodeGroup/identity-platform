@@ -4,5 +4,5 @@
   "files.trimTrailingWhitespace": true,
   "git.addAICoAuthor": "off",
   "chat.planAgent.defaultModel": "Claude Opus 5.5 (copilot)",
-  "github.copilot.chat.implementAgent.model": "Auto (copilot)"
+  "github.copilot.chat.implementAgent.model": "Claude Sonnet 5.5 (copilot)"
 }

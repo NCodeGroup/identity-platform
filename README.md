@@ -97,7 +97,7 @@ Then, in the repository:
 
 ```powershell
 tenv tofu install      # the version in .opentofu-version, signature-verified
-pre-commit install     # gitleaks, tofu fmt, and terraform-docs on every commit; strips agent co-author trailers
+pre-commit install     # gitleaks, tofu fmt, and terraform-docs on every commit; strips agent attribution
 ```
 
 Check a component or root the way CI does:
@@ -179,9 +179,10 @@ release; everything else — docs, CI, the live roots, and a component's README 
 
 ## Working with agents
 
-Coding agents start from [AGENTS.md](AGENTS.md) and [`.github/copilot-instructions.md`](.github/copilot-instructions.md).
-Multi-step changes run as plan-and-execute: Claude Opus plans into `PLAN.md`, a lower-cost Copilot model executes it
-one verified step at a time, and Opus re-plans any step that comes back
+Coding agents start from [AGENTS.md](AGENTS.md), which lists the instruction files they load. The plan-and-execute
+workflow files come from the [project template](https://github.com/polewskm/project-template), and
+`.\.template\Update-Project.ps1` updates them. Multi-step changes run as plan-and-execute: Claude Opus plans into
+`PLAN.md`, Claude Sonnet 5.5 executes it one verified step at a time, and Opus re-plans any step that comes back
 ([ADR-0170](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0170-agent-work-is-planned-on-a-frontier-model-and-executed-step-by-step-on-a-cheaper-one.md)).
 Agents validate locally only; they never plan or apply against live state.
 
