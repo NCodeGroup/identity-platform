@@ -64,12 +64,13 @@ component's README; a non-obvious decision or pending item goes into the library
 
 ## Commit attribution
 
-**Never add a `Co-authored-by:` trailer naming an agent account** (`Copilot`, `copilot-swe-agent[bot]`, or any other
-tooling identity) to a commit message. A commit records the **people** who authored it; the repository host reads that
-trailer as authorship, and a squash merge carries the branch commits' co-author trailers onto `main`, where removing
-them means rewriting published history. [`.githooks/strip-agent-co-author.sh`](../../.githooks/strip-agent-co-author.sh)
-strips such trailers through pre-commit's `commit-msg` stage as a safety net, but it is installed per clone and must
-not be relied on — do not generate the trailer in the first place. See
+**Never add agent attribution to a commit or pull request**: no `Co-authored-by:` trailer naming an agent (`Copilot`,
+`copilot-swe-agent[bot]`, Claude, or any other tooling identity), no `Claude-Session:` trailer, and no "Generated with"
+line. A commit records the **people** who authored it; the repository host reads a co-author trailer as authorship,
+and a squash merge carries the branch commits' trailers onto `main`, where removing them means rewriting published
+history. The project template's [`.githooks/commit-msg`](../../.githooks/commit-msg) strips them through pre-commit's
+`commit-msg` stage as a safety net, and the `ci` workflow's commit-attribution job fails on a commit authored,
+committed, or co-authored by an agent — do not generate the attribution in the first place. See
 [ADR-0128](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0128-commits-are-attributed-to-people-not-agents.md).
 
 ## Pull requests
