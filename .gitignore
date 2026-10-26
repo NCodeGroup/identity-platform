@@ -20,7 +20,7 @@ PLAN.md
 .env
 .env.*
 !.env.example
-secrets/
+/secrets/
 
 # Kept from this repository's own .gitignore when it adopted the project template
 # OpenTofu working directories and state — state lives in the remote backend, never in Git
