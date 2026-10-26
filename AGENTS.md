@@ -5,9 +5,18 @@ Infrastructure as code for the hosted [NCode.Identity](https://github.com/NCodeG
 repository is public on purpose and never holds credentials, state, plans, or backups. The [README](README.md) is the
 full description — layout, components, live roots, environments, conventions, and local setup.
 
-## Project Template
+## Instructions
 
-- @.github/instructions/project-template.instructions.md — the plan-then-execute workflow and base conventions, from the project template. Template updates replace it; never edit it. Where this file or a file it lists says otherwise, the project's instruction wins.
+Read each file listed here. Claude Code imports each `@` file through [`CLAUDE.md`](CLAUDE.md); GitHub Copilot loads
+every `.github/instructions/*.instructions.md` file on its own. Where this repository's files and the template's differ,
+this repository's win.
+
+- @.github/instructions/project-template.instructions.md — the plan-then-execute workflow and base conventions, from
+  the [project template](https://github.com/polewskm/project-template). Template updates replace it; never edit it.
+- @.github/instructions/identity-platform.instructions.md — posture, security defaults, the no-live-infrastructure
+  rule, where knowledge lives, commit attribution, and the pull-request protocol.
+- `.github/instructions/opentofu.instructions.md` — OpenTofu conventions; read it before editing `*.tf` or
+  `*.tftest.hcl` files.
 
 ## Layout
 
@@ -20,9 +29,6 @@ full description — layout, components, live roots, environments, conventions, 
 
 ## Rules and conventions
 
-- Posture, security defaults, the no-live-infrastructure rule, commit attribution, and the pull-request protocol:
-  [`.github/copilot-instructions.md`](.github/copilot-instructions.md).
-- OpenTofu conventions: [`.github/instructions/opentofu.instructions.md`](.github/instructions/opentofu.instructions.md).
 - Decisions and pending work live in the library repository — its
   [`docs/adr/`](https://github.com/NCodeGroup/Identity/tree/main/docs/adr) and
   [`BACKLOG.md`](https://github.com/NCodeGroup/Identity/blob/main/BACKLOG.md).
