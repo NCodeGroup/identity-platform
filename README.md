@@ -181,8 +181,9 @@ release; everything else — docs, CI, the live roots, and a component's README 
 
 Coding agents start from [AGENTS.md](AGENTS.md), which lists the instruction files they load. The plan-and-execute
 workflow files come from the [project template](https://github.com/polewskm/project-template), and
-`.\.template\Update-Project.ps1` updates them. Multi-step changes run as plan-and-execute: Claude Opus plans into
-`PLAN.md`, Claude Sonnet 5.5 executes it one verified step at a time, and Opus re-plans any step that comes back
+`.\.template\Update-Project.ps1` updates them; `/plan-template-update` plans that update from a trial run first.
+Multi-step changes run as plan-and-execute: Claude Opus plans into `PLAN.md`, Claude Sonnet 5.5 executes it one
+verified step at a time, and Opus re-plans any step that comes back
 ([ADR-0170](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0170-agent-work-is-planned-on-a-frontier-model-and-executed-step-by-step-on-a-cheaper-one.md)).
 Agents validate locally only; they never plan or apply against live state.
 
