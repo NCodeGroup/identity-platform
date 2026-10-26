@@ -97,15 +97,17 @@ any step that needs a decision comes back to Opus to be re-planned.
   check: it fails until the step is done.
 - **Split across releases.** A change to a component and its adoption by a live root are separate plans and pull
   requests, with a release tag between them ([Releasing](README.md#releasing)).
-- **`PLAN.md` is transient:** the pull-request protocol in [`copilot-instructions.md`](.github/copilot-instructions.md)
-  promotes its Decisions and deletes it before the pull request merges.
-- The agents, prompts, and skills under `.github/` are **generated** (the installer command is in ADR-0170); change the
-  templates and re-install rather than hand-editing them. Repository rules belong in the instruction files, which every
-  agent in the loop already loads.
+- **`PLAN.md` is transient:** the pull-request protocol in
+  [`identity-platform.instructions.md`](.github/instructions/identity-platform.instructions.md) promotes its Decisions
+  and deletes it before the pull request merges.
+- The agents, prompts, skills and Claude Code commands under `.github/` and `.claude/` come from the
+  [project template](https://github.com/polewskm/project-template) and are **template-owned**: never hand-edit them;
+  `.\.template\Update-Project.ps1` updates them to the template's newest release. Repository rules belong in the
+  instruction files, which every agent in the loop already loads.
 
 ### Local and Copilot customizations
 
-**Both session targets are intentionally supported.** The 16 workflow pairs under
+**Both session targets are intentionally supported.** The 17 workflow pairs under
 [`.github/prompts/`](.github/prompts/) and [`.github/skills/`](.github/skills/) are runtime adapters, not unfinished
 migration work. Local prompts retain their agent/model/tool selections; Copilot skills use the session model.
 Duplicate commands in Local's slash menu and automatic skill selection are accepted behaviors. Skill descriptions
@@ -116,7 +118,7 @@ allowing only argument syntax, relative Markdown-link depth, line endings and ou
 prompt-only settings and invocation-control flags in skills. The
 [fixture tests](build/tests/agent-customizations.tests.ps1) cover the real pairs and success/failure fixtures, and run
 first in `validate`, before infrastructure setup. These scripts mirror the library's tooling; keep them synchronized
-when changing the shared validation contract. Run the tests after reinstalling workflow templates.
+when changing the shared validation contract. Run the tests after each template update.
 
 **Do not bulk-migrate these prompts.** Copilot's migration banner identifies prompt files it does not read, but the
 matching skills already exist. Use **Ignore** for the workspace **Convert Prompt to Skills** group;
