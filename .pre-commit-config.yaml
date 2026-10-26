@@ -28,9 +28,11 @@ repos:
         language: system
         pass_filenames: false
         files: ^live/.*\.(tf|md)$
-      # Commits are attributed to people, not agents (Identity ADR-0128).
-      - id: strip-agent-co-author
-        name: strip agent co-author trailers
-        entry: .githooks/strip-agent-co-author.sh
-        language: script
+      # Commits are attributed to people, not agents (Identity ADR-0128). The project template's commit-msg hook strips
+      # agent attribution; `sh` runs it because pre-commit on Windows can't run a `#!/bin/sh` script. Don't set
+      # core.hooksPath, as the template's scripts suggest: pre-commit refuses to install while it is set.
+      - id: strip-agent-attribution
+        name: strip agent attribution
+        entry: sh .githooks/commit-msg
+        language: system
         stages: [commit-msg]
