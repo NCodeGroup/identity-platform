@@ -88,14 +88,24 @@ tag is permanent — the `release-tags` ruleset blocks moving or deleting it —
 asks.
 
 **"Push" means push and open the pull request.** When the user says `push`, push the branch and, in the same turn,
-open its pull request with `gh pr create` (or, when one is already open, let the push update it). This repository
-overrides the project template's "only when asked": the word `push` is the ask. It does not authorize a release tag.
+open its pull request with `gh pr create` (or, when one is already open, let the push update it). For a plan,
+`/ship-plan` does both. This repository overrides the project template's "only when asked": the word `push` is the ask.
+It does not authorize a release tag.
+
+**`/ship-plan` follows this section.** When it opens a pull request, its title and description are the ones described
+above — the conventional-commit title and the **Why**, **Changes**, **Verified** body, with `Closes <issue reference>`
+on a line of its own when the plan has an `Issue:` line — not the plan's title and a short summary. Pick none of the
+follow-ups it offers to file as issues here: pending work goes to the library's backlog, as described under
+[Where knowledge lives](#where-knowledge-lives). The template has no setting for either yet
+(polewskm/project-template#45, #46).
 
 When the user authorizes opening or updating a pull request, first:
 
-1. **Retire the plan.** If a `PLAN.md` exists, every step is `[x]` and its review (`/review-plan-diff`) has run with
-   every queued fix step done. Promote its Decisions in gate 2 and delete `PLAN.md` so it never reaches `main`; the
-   squash merge folds its `Plan step N` / `Re-plan step N` checkpoint commits
+1. **Retire the plan.** If a `PLAN.md` exists, every step is `[x]` and a clean review (`/review-plan-diff`) has
+   recorded its `Reviewed:` line, with every queued fix step done. Promote its Decisions in gate 2. `PLAN.md` is
+   untracked and never reaches `main`: `/ship-plan` keeps it until `/finish-plan` deletes it after the merge, and a
+   push made without `/ship-plan` deletes it first. The squash merge folds its `Plan step N` / `Re-plan step N`
+   checkpoint commits
    ([ADR-0170](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0170-agent-work-is-planned-on-a-frontier-model-and-executed-step-by-step-on-a-cheaper-one.md)).
 2. **Persist lessons.** Promote every lesson learned into durable content, as described under
    [Where knowledge lives](#where-knowledge-lives).
