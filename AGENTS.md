@@ -61,6 +61,25 @@ terraform-docs --config .terraform-docs.yml --recursive --recursive-path live --
 outputs, regenerate the docs (the same `terraform-docs` commands without `--output-check`); after changing a live root's
 providers, record lock-file checksums with the `tofu providers lock` command in the README.
 
+## Landing
+
+How `/ship-plan` lands a reviewed plan. `integrate`: `pull-request` pushes the plan's branch and opens a pull request;
+`direct` pushes to the default branch. `release`: `none`; `tag` tags the plan's `Release:` version; `tag+release` also
+publishes a release from that version's section of `changelog`. `protect`: `none`; `hook` makes `.githooks/pre-push`
+refuse any push to the default branch, for a host that can't require pull requests, such as a private repository on
+GitHub Free. `/run-issues` runs only when the host requires pull requests into the default branch, or `protect` is
+`hook` and the hooks are enabled.
+
+In this repository, `main`'s ruleset requires pull requests, so `protect` stays `none`. `release` stays `none`: a
+release tags components, by hand and only when the user asks ([Releasing](README.md#releasing)), and this repository
+keeps no changelog, so `changelog` is unused. The pull request's title, description and follow-ups follow the
+[pull-request protocol](.github/instructions/identity-platform.instructions.md#pull-requests).
+
+- integrate: pull-request
+- release: none
+- changelog: CHANGELOG.md
+- protect: none
+
 ## Plan-and-execute workflow
 
 Multi-step changes run as **plan-and-execute**
