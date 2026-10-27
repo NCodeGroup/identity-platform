@@ -27,7 +27,7 @@ this repository's win.
 | `.github/workflows/`    | `validate` (required), `deploy` (plan on pull request, apply after merge), `ci` (attribution)   |
 | `.github/instructions/` | Scoped coding conventions, auto-applied by path                                                 |
 | `.claude/`              | Claude Code commands, `plan-executor` agent, and settings; template-owned except settings       |
-| `.template/`            | The project template's `Update-Project.ps1` and `Test-CommitAttribution.ps1`; template-owned    |
+| `.template/`            | Project-template scripts such as `Update-Project.ps1` and `Get-PlanState.ps1`; template-owned   |
 
 ## Rules and conventions
 
@@ -120,9 +120,9 @@ any step that needs a decision comes back to Opus to be re-planned.
   check: it fails until the step is done.
 - **Split across releases.** A change to a component and its adoption by a live root are separate plans and pull
   requests, with a release tag between them ([Releasing](README.md#releasing)).
-- **`PLAN.md` is transient:** the pull-request protocol in
+- **`PLAN.md` is transient:** it stays untracked in the plan's worktree; the pull-request protocol in
   [`identity-platform.instructions.md`](.github/instructions/identity-platform.instructions.md) promotes its Decisions
-  and deletes it before the pull request merges.
+  before the pull request opens, and `/finish-plan` deletes it after the merge.
 - The agents, prompts, skills and Claude Code commands under `.github/` and `.claude/` come from the
   [project template](https://github.com/polewskm/project-template) and are **template-owned**: never hand-edit them;
   `.\.template\Update-Project.ps1` updates them to the template's newest release. Repository rules belong in the
@@ -130,7 +130,7 @@ any step that needs a decision comes back to Opus to be re-planned.
 
 ### Local and Copilot customizations
 
-**Both session targets are intentionally supported.** The 20 workflow pairs under
+**Both session targets are intentionally supported.** The 22 workflow pairs under
 [`.github/prompts/`](.github/prompts/) and [`.github/skills/`](.github/skills/) are runtime adapters, not unfinished
 migration work. Local prompts retain their agent/model/tool selections; Copilot skills use the session model.
 Duplicate commands in Local's slash menu and automatic skill selection are accepted behaviors. Skill descriptions
