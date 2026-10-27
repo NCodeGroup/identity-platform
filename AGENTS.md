@@ -27,7 +27,7 @@ this repository's win.
 | `.github/workflows/`    | `validate` (required), `deploy` (plan on pull request, apply after merge), `ci` (attribution)   |
 | `.github/instructions/` | Scoped coding conventions, auto-applied by path                                                 |
 | `.claude/`              | Claude Code commands, `plan-executor` agent, and settings; template-owned except settings       |
-| `.template/`            | The project template's `Update-Project.ps1` and `Test-CommitAttribution.ps1`; template-owned    |
+| `.template/`            | Project-template scripts such as `Update-Project.ps1` and `Get-PlanState.ps1`; template-owned   |
 
 ## Rules and conventions
 
@@ -61,6 +61,25 @@ terraform-docs --config .terraform-docs.yml --recursive --recursive-path live --
 outputs, regenerate the docs (the same `terraform-docs` commands without `--output-check`); after changing a live root's
 providers, record lock-file checksums with the `tofu providers lock` command in the README.
 
+## Landing
+
+How `/ship-plan` lands a reviewed plan. `integrate`: `pull-request` pushes the plan's branch and opens a pull request;
+`direct` pushes to the default branch. `release`: `none`; `tag` tags the plan's `Release:` version; `tag+release` also
+publishes a release from that version's section of `changelog`. `protect`: `none`; `hook` makes `.githooks/pre-push`
+refuse any push to the default branch, for a host that can't require pull requests, such as a private repository on
+GitHub Free. `/run-issues` runs only when the host requires pull requests into the default branch, or `protect` is
+`hook` and the hooks are enabled.
+
+In this repository, `main`'s ruleset requires pull requests, so `protect` stays `none`. `release` stays `none`: a
+release tags components, by hand and only when the user asks ([Releasing](README.md#releasing)), and this repository
+keeps no changelog, so `changelog` is unused. The pull request's title, description and follow-ups follow the
+[pull-request protocol](.github/instructions/identity-platform.instructions.md#pull-requests).
+
+- integrate: pull-request
+- release: none
+- changelog: CHANGELOG.md
+- protect: none
+
 ## Plan-and-execute workflow
 
 Multi-step changes run as **plan-and-execute**
@@ -78,9 +97,10 @@ any step that needs a decision comes back to Opus to be re-planned.
   `/plan-tests`, `/plan-migration`, `/plan-performance`, `/plan-security`, `/plan-docs`, `/plan-issue`,
   `/plan-template-update`, and `/handoff-plan` after planning in conversation — select Opus themselves but run in the
   built-in Agent, which has no handoff buttons: continue by picking **Copilot Orchestrator** with Opus and asking it to
-  execute `PLAN.md`.
+  execute `PLAN.md`. Land the reviewed plan with `/ship-plan`, and run `/finish-plan` after the merge.
 - **Copilot CLI:** start on Opus — `copilot --model claude-opus-5.5 --reasoning-effort high` — then `/plan-feature …`,
-  `/orchestrate-plan` (delegates each step to the `plan-executor` agent on Sonnet), and `/review-plan-diff`.
+  `/orchestrate-plan` (delegates each step to the `plan-executor` agent on Sonnet), `/review-plan-diff`, `/ship-plan`
+  to open the pull request, and `/finish-plan` after the merge.
 - **VS Code (session target Copilot):** use the same skills as Copilot CLI. Select **Claude Opus 5.5** before planning
   or orchestration and **Claude Sonnet 5.5** before review. Skills use the session's selected model; they cannot switch
   it using the corresponding Local prompt's metadata. Execution uses the delegated executor, or the model selected
@@ -89,7 +109,10 @@ any step that needs a decision comes back to Opus to be re-planned.
   generated agents to work around session-specific model availability.
 - **Claude Code:** a planning command (`/plan-feature …`, `/plan-migration …`) plans in a worktree under
   `.claude/worktrees/<name>/`; `/orchestrate-plan` runs each step on the `plan-executor` subagent (Sonnet 5.5),
-  `/review-plan-diff` reviews, and `/finish-plan` cleans up after the merge. See [`CLAUDE.md`](CLAUDE.md).
+  `/review-plan-diff` reviews, `/ship-plan` opens the pull request as [Landing](#landing) says, and `/finish-plan`
+  cleans up after the merge; `/continue-plan` shows where each open plan stands and what to run next. `/run-issues`
+  (Claude Code only) takes issues from planning to a draft pull request, one at a time, and lands each once you merge
+  it. See [`CLAUDE.md`](CLAUDE.md).
 - **Issues and template updates:** `/plan-issue #42` plans one issue, choosing the kind of plan from its labels;
   `/triage-issues <filter>` lists the open issues ready to plan and changes nothing; `/plan-template-update` plans the
   next project-template update from a trial run on a clone. The commands exist in all three runtimes.
@@ -101,9 +124,9 @@ any step that needs a decision comes back to Opus to be re-planned.
   check: it fails until the step is done.
 - **Split across releases.** A change to a component and its adoption by a live root are separate plans and pull
   requests, with a release tag between them ([Releasing](README.md#releasing)).
-- **`PLAN.md` is transient:** the pull-request protocol in
+- **`PLAN.md` is transient:** it stays untracked in the plan's worktree; the pull-request protocol in
   [`identity-platform.instructions.md`](.github/instructions/identity-platform.instructions.md) promotes its Decisions
-  and deletes it before the pull request merges.
+  before the pull request opens, and `/finish-plan` deletes it after the merge.
 - The agents, prompts, skills and Claude Code commands under `.github/` and `.claude/` come from the
   [project template](https://github.com/polewskm/project-template) and are **template-owned**: never hand-edit them;
   `.\.template\Update-Project.ps1` updates them to the template's newest release. Repository rules belong in the
@@ -111,7 +134,7 @@ any step that needs a decision comes back to Opus to be re-planned.
 
 ### Local and Copilot customizations
 
-**Both session targets are intentionally supported.** The 20 workflow pairs under
+**Both session targets are intentionally supported.** The 22 workflow pairs under
 [`.github/prompts/`](.github/prompts/) and [`.github/skills/`](.github/skills/) are runtime adapters, not unfinished
 migration work. Local prompts retain their agent/model/tool selections; Copilot skills use the session model.
 Duplicate commands in Local's slash menu and automatic skill selection are accepted behaviors. Skill descriptions
