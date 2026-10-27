@@ -87,6 +87,10 @@ steps, including how to choose the version, are in the README's [Releasing](../.
 tag is permanent — the `release-tags` ruleset blocks moving or deleting it — so create or push one only when the user
 asks.
 
+**"Push" means push and open the pull request.** When the user says `push`, push the branch and, in the same turn,
+open its pull request with `gh pr create` (or, when one is already open, let the push update it). This repository
+overrides the project template's "only when asked": the word `push` is the ask. It does not authorize a release tag.
+
 When the user authorizes opening or updating a pull request, first:
 
 1. **Retire the plan.** If a `PLAN.md` exists, every step is `[x]` and its review (`/review-plan-diff`) has run with
