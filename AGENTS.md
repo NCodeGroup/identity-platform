@@ -97,9 +97,10 @@ any step that needs a decision comes back to Opus to be re-planned.
   `/plan-tests`, `/plan-migration`, `/plan-performance`, `/plan-security`, `/plan-docs`, `/plan-issue`,
   `/plan-template-update`, and `/handoff-plan` after planning in conversation — select Opus themselves but run in the
   built-in Agent, which has no handoff buttons: continue by picking **Copilot Orchestrator** with Opus and asking it to
-  execute `PLAN.md`.
+  execute `PLAN.md`. Land the reviewed plan with `/ship-plan`, and run `/finish-plan` after the merge.
 - **Copilot CLI:** start on Opus — `copilot --model claude-opus-5.5 --reasoning-effort high` — then `/plan-feature …`,
-  `/orchestrate-plan` (delegates each step to the `plan-executor` agent on Sonnet), and `/review-plan-diff`.
+  `/orchestrate-plan` (delegates each step to the `plan-executor` agent on Sonnet), `/review-plan-diff`, `/ship-plan`
+  to open the pull request, and `/finish-plan` after the merge.
 - **VS Code (session target Copilot):** use the same skills as Copilot CLI. Select **Claude Opus 5.5** before planning
   or orchestration and **Claude Sonnet 5.5** before review. Skills use the session's selected model; they cannot switch
   it using the corresponding Local prompt's metadata. Execution uses the delegated executor, or the model selected
@@ -108,7 +109,10 @@ any step that needs a decision comes back to Opus to be re-planned.
   generated agents to work around session-specific model availability.
 - **Claude Code:** a planning command (`/plan-feature …`, `/plan-migration …`) plans in a worktree under
   `.claude/worktrees/<name>/`; `/orchestrate-plan` runs each step on the `plan-executor` subagent (Sonnet 5.5),
-  `/review-plan-diff` reviews, and `/finish-plan` cleans up after the merge. See [`CLAUDE.md`](CLAUDE.md).
+  `/review-plan-diff` reviews, `/ship-plan` opens the pull request as [Landing](#landing) says, and `/finish-plan`
+  cleans up after the merge; `/continue-plan` shows where each open plan stands and what to run next. `/run-issues`
+  (Claude Code only) takes issues from planning to a draft pull request, one at a time, and lands each once you merge
+  it. See [`CLAUDE.md`](CLAUDE.md).
 - **Issues and template updates:** `/plan-issue #42` plans one issue, choosing the kind of plan from its labels;
   `/triage-issues <filter>` lists the open issues ready to plan and changes nothing; `/plan-template-update` plans the
   next project-template update from a trial run on a clone. The commands exist in all three runtimes.
