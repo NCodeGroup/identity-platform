@@ -11,6 +11,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `docs`: This changelog. Every change adds its entries under `## [Unreleased]`, and a release moves them into its
   version's section, which becomes the release notes.
 - `agents`: `/run-issues` runs in Copilot Chat and Copilot CLI as well as Claude Code.
+- `docs`: Sections for v0.1.0, v0.2.0 and v0.3.0, taken from their GitHub release notes, so the changelog covers every
+  release.
 
 ### Changed
 
