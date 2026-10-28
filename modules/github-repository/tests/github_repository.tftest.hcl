@@ -89,3 +89,25 @@ run "release_tags_are_immutable" {
     error_message = "Release tags can't be deleted or moved."
   }
 }
+
+run "auto_merge_is_opt_in" {
+  command = plan
+
+  assert {
+    condition     = !github_repository.this.allow_auto_merge
+    error_message = "Auto-merge must be off unless allow_auto_merge is set."
+  }
+}
+
+run "auto_merge_can_be_enabled" {
+  command = plan
+
+  variables {
+    allow_auto_merge = true
+  }
+
+  assert {
+    condition     = github_repository.this.allow_auto_merge
+    error_message = "allow_auto_merge must turn on the repository's auto-merge."
+  }
+}

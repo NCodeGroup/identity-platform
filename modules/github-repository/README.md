@@ -5,6 +5,8 @@ rulesets, and deployment environments
 ([ADR-0132](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0132-platform-infrastructure-as-code-is-public-on-github.md)).
 
 - **Merging:** squash only (pull request title and body become the commit), head branches deleted after merge.
+  Auto-merge is off unless `allow_auto_merge` is set; an auto-merged pull request still waits for everything the
+  default branch ruleset requires.
 - **Security:** secret scanning with push protection, Dependabot alerts and security updates.
 - **Actions:** only GitHub-owned, verified-creator, and explicitly allowed actions, each pinned to a full commit SHA;
   workflows get a read-only `GITHUB_TOKEN` and can't approve pull requests.
@@ -91,6 +93,7 @@ import {
 | ---- | ----------- | ---- | ------- | :------: |
 | description | Repository description. | `string` | n/a | yes |
 | name | Repository name (without the owner). | `string` | n/a | yes |
+| allow\_auto\_merge | Let pull requests be set to merge on their own once everything the default branch ruleset requires has passed. | `bool` | `false` | no |
 | allowed\_actions\_patterns | Third-party actions allowed in addition to GitHub-owned and verified-creator actions, for example `opentofu/setup-opentofu@*`. Every action must still be pinned to a full commit SHA. | `list(string)` | `[]` | no |
 | deletion\_protection | Archive instead of delete on destroy, and block `tofu destroy` of this component. | `bool` | `true` | no |
 | environments | Deployment environments keyed by name. Only the default branch can deploy to them. `reviewers` are GitHub logins who must approve each deployment; `variables` are non-secret environment variables (role ARNs, regions, bucket names). | ```map(object({ reviewers = optional(list(string), []) prevent_self_review = optional(bool, false) wait_timer = optional(number, 0) variables = optional(map(string), {}) }))``` | `{}` | no |
