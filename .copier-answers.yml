@@ -1,5 +1,5 @@
 # Written by Copier; never edit by hand. Change an answer with .template\Update-Project.ps1 -Data.
-_commit: v0.23.0
+_commit: v0.37.0
 _src_path: https://github.com/polewskm/project-template.git
 build_command: ''
 git_host: github
