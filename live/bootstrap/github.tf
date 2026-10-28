@@ -13,7 +13,7 @@ data "github_organization" "owner" {
 }
 
 module "repository" {
-  source = "git::https://github.com/NCodeGroup/identity-platform.git//modules/github-repository?ref=v0.3.0"
+  source = "git::https://github.com/NCodeGroup/identity-platform.git//modules/github-repository?ref=v0.3.1"
 
   name         = var.github_repository
   description  = "Infrastructure as code for the hosted NCode.Identity platform: OpenTofu components, Flux GitOps, and live environments."
@@ -22,6 +22,7 @@ module "repository" {
 
   allowed_actions_patterns = ["opentofu/setup-opentofu@*"]
   required_status_checks   = ["validate"]
+  allow_auto_merge         = true
 
   variables = {
     AWS_REGION           = var.aws_region

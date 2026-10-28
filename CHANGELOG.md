@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- `bootstrap`: Consumes the components at v0.3.1 and turns on the repository's auto-merge (`allow_auto_merge = true`),
+  so a pull request can be set to merge on its own once everything the default branch ruleset requires has passed.
+
 ## [0.3.1] - 2026-10-28
 
 ### Added
