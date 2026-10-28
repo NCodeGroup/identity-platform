@@ -92,12 +92,12 @@ open its pull request with `gh pr create` (or, when one is already open, let the
 `/ship-plan` does both. This repository overrides the project template's "only when asked": the word `push` is the ask.
 It does not authorize a release tag.
 
-**`/ship-plan` follows this section.** When it opens a pull request, its title and description are the ones described
-above — the conventional-commit title and the **Why**, **Changes**, **Verified** body, with `Closes <issue reference>`
-on a line of its own when the plan has an `Issue:` line — not the plan's title and a short summary. Pick none of the
-follow-ups it offers to file as issues here: pending work goes to the library's backlog, as described under
-[Where knowledge lives](#where-knowledge-lives). The template has no setting for either yet
-(polewskm/project-template#45, #46).
+**`/ship-plan` follows this section.** The `pr-format` line of the [Landing](../../AGENTS.md#landing) section in
+`AGENTS.md` names it, so the pull requests `/ship-plan` opens and the descriptions `/run-issues` refreshes take the
+conventional-commit title and the **Why**, **Changes**, **Verified** body above, ending with
+`Closes <issue reference>` on a line of its own when the plan has an `Issue:` line. Its `follow-ups: none` keeps
+`/ship-plan` from filing a plan's follow-ups as issues here: it lists them instead, and pending work goes to the
+library's backlog, as described under [Where knowledge lives](#where-knowledge-lives).
 
 When the user authorizes opening or updating a pull request, first:
 

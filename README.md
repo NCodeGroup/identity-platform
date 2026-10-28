@@ -141,7 +141,7 @@ tagged, and a second pull request moves the live roots to the tag. Only a change
 release; everything else — docs, CI, the live roots, and a component's README or tests — ships with the next one.
 
 1. **Merge the component change** in its own pull request: `feat(<component>): …` or `fix(<component>): …`, with `!`
-   when it breaks consumers.
+   when it breaks consumers. Its plan adds the change's entries under `## [Unreleased]` in [CHANGELOG.md](CHANGELOG.md).
 2. **Choose the version** from what changed in the components' `.tf` files since the last tag — not from pull request
    titles. List it with `git log --oneline <last tag>..main -- 'modules/*.tf'`. The repository has one version for every
    component. Before 1.0, a breaking change bumps the minor version (`v0.3.0` → `v0.4.0`) and anything else bumps the
@@ -149,7 +149,13 @@ release; everything else — docs, CI, the live roots, and a component's README 
    Breaking means a consumer must act to adopt the release: a removed or reshaped input or output, a new required
    input, a forced resource replacement, a raised provider or OpenTofu floor, or a new permission for the credentials
    that apply it.
-3. **Tag `main`.** The `release-tags` ruleset protects `v*` tags from deletion and from being moved, so a pushed tag is
+3. **Cut the changelog** in a pull request titled `docs(changelog): release vX.Y.Z`. In [CHANGELOG.md](CHANGELOG.md),
+   add `## [X.Y.Z] - <date>` right below `## [Unreleased]`, dated with `Get-Date -Format yyyy-MM-dd`, and move every
+   entry under `## [Unreleased]` into it, keeping their groups. Point the `[unreleased]` link at
+   `compare/vX.Y.Z...HEAD`, and add this link right below it:
+   `[X.Y.Z]: https://github.com/NCodeGroup/identity-platform/compare/<last tag>...vX.Y.Z`.
+
+4. **Tag `main`.** The `release-tags` ruleset protects `v*` tags from deletion and from being moved, so a pushed tag is
    permanent — tag the merged commit, never a local one:
 
    ```powershell
@@ -158,11 +164,11 @@ release; everything else — docs, CI, the live roots, and a component's README 
    git push origin v0.4.0
    ```
 
-4. **Publish the release** on GitHub — Releases → Draft a new release → the tag, titled with the version. Write the
-   notes by hand for whoever adopts the release, under `## Breaking`, `## Added`, and `## Fixed`: each bullet starts
-   with the component in backticks and says what the consumer must do — a token permission, a provider floor, an input
-   that changed shape (see [v0.3.0](https://github.com/NCodeGroup/identity-platform/releases/tag/v0.3.0)).
-5. **Adopt the release** in each live root that uses components, in a pull request titled
+5. **Publish the release** on GitHub — Releases → Draft a new release → the tag, titled with the version. The notes are
+   the version's changelog section, its `###` groups as they are: each bullet starts with the component in backticks,
+   a breaking one with `**Breaking:**`, and says what the consumer must do — a token permission, a provider floor, an
+   input that changed shape.
+6. **Adopt the release** in each live root that uses components, in a pull request titled
    `chore(<root>): consume vX.Y.Z`:
    - Move every `?ref=` in the root to the new tag — unchanged components too, so a root runs a single release.
    - Regenerate the root's docs with the `terraform-docs` command above.
@@ -174,7 +180,7 @@ release; everything else — docs, CI, the live roots, and a component's README 
    Dependabot's weekly `opentofu` run proposes the same bumps a week after a release, one component at a time and
    without the docs. Adopt by hand instead; Dependabot closes its pull requests once the root already uses the release.
 
-6. **Apply.** After the adoption merges, `deploy` applies a CI root once the `production` environment is approved;
+7. **Apply.** After the adoption merges, `deploy` applies a CI root once the `production` environment is approved;
    [`live/bootstrap`](live/bootstrap#later-runs) is applied by hand.
 
 ## Working with agents
