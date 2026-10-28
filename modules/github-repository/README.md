@@ -5,6 +5,8 @@ rulesets, and deployment environments
 ([ADR-0132](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0132-platform-infrastructure-as-code-is-public-on-github.md)).
 
 - **Merging:** squash only (pull request title and body become the commit), head branches deleted after merge.
+  Auto-merge is off unless `allow_auto_merge` is set; an auto-merged pull request still waits for everything the
+  default branch ruleset requires.
 - **Security:** secret scanning with push protection, Dependabot alerts and security updates.
 - **Actions:** only GitHub-owned, verified-creator, and explicitly allowed actions, each pinned to a full commit SHA;
   workflows get a read-only `GITHUB_TOKEN` and can't approve pull requests.
