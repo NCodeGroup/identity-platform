@@ -64,21 +64,38 @@ providers, record lock-file checksums with the `tofu providers lock` command in 
 ## Landing
 
 How `/ship-plan` lands a reviewed plan. `integrate`: `pull-request` pushes the plan's branch and opens a pull request;
-`direct` pushes to the default branch. `release`: `none`; `tag` tags the plan's `Release:` version; `tag+release` also
-publishes a release from that version's section of `changelog`. `protect`: `none`; `hook` makes `.githooks/pre-push`
-refuse any push to the default branch, for a host that can't require pull requests, such as a private repository on
-GitHub Free. `/run-issues` runs only when the host requires pull requests into the default branch, or `protect` is
-`hook` and the hooks are enabled.
+`direct` pushes to the default branch. `release`: `none`; `tag` tags the plan's `Release:` version, or the next free
+one when another plan landed it first; `tag+release` also publishes a release from that version's section of
+`changelog`. `changelog`: the file every plan's last step writes, in the Keep a Changelog format, `CHANGELOG.md` by
+default. `draft`: `no`; `yes` opens every pull request as a draft, as `/ship-plan draft` does. `follow-ups`: `issues`
+files a plan's follow-ups as issues in this repository; `<owner/repo>` files them in that repository; `none` files
+none, and `/ship-plan` lists them for you to record. `follow-up-label`: the label those issues get, `follow-up` by
+default; write a name with spaces as it is, such as `tech debt`. `gate`: `none`; a command, such as
+`./build/dod.ps1 -Fast -Affected`, that `/ship-plan` and `/run-issues` run from the repository root before each push,
+stopping when it exits non-zero or changes a file. `protect`: `none`; `hook` makes `.githooks/pre-push` refuse any
+push to the default branch, for a host that can't require pull requests, such as a private repository on GitHub Free.
+`pr-format`: `none`; `<file>#<heading>`, such as `AGENTS.md#Pull requests`, names the section that sets the title and
+description of the pull requests `/ship-plan` opens, which still end with their `Closes` lines. `/run-issues` runs only
+when the host requires pull requests into the default branch, or `protect` is `hook` and the hooks are enabled.
 
 In this repository, `main`'s ruleset requires pull requests, so `protect` stays `none`. `release` stays `none`: a
-release tags components, by hand and only when the user asks ([Releasing](README.md#releasing)), and this repository
-keeps no changelog, so `changelog` is unused. The pull request's title, description and follow-ups follow the
-[pull-request protocol](.github/instructions/identity-platform.instructions.md#pull-requests).
+release tags components, by hand and only when the user asks, after a pull request moves the entries under
+`## [Unreleased]` in [`CHANGELOG.md`](CHANGELOG.md) into the new version's section ([Releasing](README.md#releasing)).
+Changelog entries are written for whoever consumes the components and roots: each starts with the component, root or
+area (`ci`, `agents`, `docs`) in backticks, and a breaking one with `**Breaking:**`. `pr-format` names the
+[pull-request protocol](.github/instructions/identity-platform.instructions.md#pull-requests), which sets each pull
+request's title and description. `follow-ups` is `none` because pending work goes to the library's backlog, not to
+issues here. `gate` stays `none`: the `validate` workflow runs the [local checks](#local-checks) on every pull request.
 
 - integrate: pull-request
 - release: none
 - changelog: CHANGELOG.md
+- draft: no
+- follow-ups: none
+- follow-up-label: follow-up
+- gate: none
 - protect: none
+- pr-format: .github/instructions/identity-platform.instructions.md#Pull requests
 
 ## Plan-and-execute workflow
 
