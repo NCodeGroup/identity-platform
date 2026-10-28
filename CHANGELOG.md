@@ -17,6 +17,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `agents`: The plan-and-execute workflow follows project-template v0.37.0. `/ship-plan` titles and describes pull
   requests by this repository's pull-request protocol and files no follow-ups as issues.
 
+## [0.2.0] - 2026-10-18
+
+### Added
+
+- `aws-github-oidc`: Every role requires the session name `gh-<run_id>-<run_attempt>` (`sts:RoleSessionName`), so
+  CloudTrail ties each call to its workflow run.
+- `github-repository`: The `repository_id` output.
+
+### Changed
+
+- **Breaking:** `aws-github-oidc`: `repository` is now `{ owner, owner_id, name, id }`. Trust policies match GitHub's
+  immutable OIDC subject (`repo:<owner>@<owner_id>/<name>@<id>:<context>`), the default for repositories created after
+  July 15, 2026; older repositories must opt in first.
+
 ## [0.1.0] - 2026-10-18
 
 ### Added
@@ -32,4 +46,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `modules`: Stateful components default to `deletion_protection = true`.
 
 [unreleased]: https://github.com/NCodeGroup/identity-platform/compare/v0.3.0...HEAD
+[0.2.0]: https://github.com/NCodeGroup/identity-platform/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/NCodeGroup/identity-platform/releases/tag/v0.1.0
