@@ -11,10 +11,52 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `docs`: This changelog. Every change adds its entries under `## [Unreleased]`, and a release moves them into its
   version's section, which becomes the release notes.
 - `agents`: `/run-issues` runs in Copilot Chat and Copilot CLI as well as Claude Code.
+- `docs`: Sections for v0.1.0, v0.2.0 and v0.3.0, taken from their GitHub release notes, so the changelog covers every
+  release.
 
 ### Changed
 
 - `agents`: The plan-and-execute workflow follows project-template v0.37.0. `/ship-plan` titles and describes pull
   requests by this repository's pull-request protocol and files no follow-ups as issues.
 
+## [0.3.0] - 2026-10-19
+
+### Changed
+
+- **Breaking:** `cloudflare-zone`: Universal SSL is always off (`cloudflare_universal_ssl_setting`), so the zone's CAA
+  records are the only certificate authorities that can issue for it. Cloudflare otherwise publishes hidden CAA records
+  for its own CAs. The token that applies the module needs *Zone → SSL and Certificates → Edit*, and the cloudflare
+  provider must be `>= 5.13`.
+
+## [0.2.0] - 2026-10-18
+
+### Added
+
+- `aws-github-oidc`: Every role requires the session name `gh-<run_id>-<run_attempt>` (`sts:RoleSessionName`), so
+  CloudTrail ties each call to its workflow run.
+- `github-repository`: The `repository_id` output.
+
+### Changed
+
+- **Breaking:** `aws-github-oidc`: `repository` is now `{ owner, owner_id, name, id }`. Trust policies match GitHub's
+  immutable OIDC subject (`repo:<owner>@<owner_id>/<name>@<id>:<context>`), the default for repositories created after
+  July 15, 2026; older repositories must opt in first.
+
+## [0.1.0] - 2026-10-18
+
+### Added
+
+- `tags`: The shared tag set, rendered for each vendor.
+- `aws-state-backend`: S3 bucket and KMS key for OpenTofu state.
+- `aws-backup-bucket`: Object Lock bucket for database backups.
+- `aws-kms-key`: Customer-managed KMS key.
+- `aws-github-oidc`: IAM roles GitHub Actions assumes through OIDC.
+- `cloudflare-zone`: DNS zone with DNSSEC, CAA, and DMARC.
+- `github-repository`: Hardened repository: rulesets, Actions policy, environments.
+- `modules`: Every component requires OpenTofu 1.13 or later.
+- `modules`: Stateful components default to `deletion_protection = true`.
+
 [unreleased]: https://github.com/NCodeGroup/identity-platform/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/NCodeGroup/identity-platform/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/NCodeGroup/identity-platform/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/NCodeGroup/identity-platform/releases/tag/v0.1.0
