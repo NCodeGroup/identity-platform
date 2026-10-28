@@ -31,6 +31,12 @@ variable "visibility" {
   }
 }
 
+variable "allow_auto_merge" {
+  description = "Let pull requests be set to merge on their own once everything the default branch ruleset requires has passed."
+  type        = bool
+  default     = false
+}
+
 variable "allowed_actions_patterns" {
   description = "Third-party actions allowed in addition to GitHub-owned and verified-creator actions, for example `opentofu/setup-opentofu@*`. Every action must still be pinned to a full commit SHA."
   type        = list(string)

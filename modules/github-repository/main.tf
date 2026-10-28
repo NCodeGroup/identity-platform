@@ -13,7 +13,7 @@ resource "github_repository" "this" {
   allow_merge_commit          = false
   allow_squash_merge          = true
   allow_rebase_merge          = false
-  allow_auto_merge            = false
+  allow_auto_merge            = var.allow_auto_merge
   allow_update_branch         = false
   delete_branch_on_merge      = true
   squash_merge_commit_title   = "PR_TITLE"
