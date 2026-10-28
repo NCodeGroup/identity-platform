@@ -17,6 +17,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `agents`: The plan-and-execute workflow follows project-template v0.37.0. `/ship-plan` titles and describes pull
   requests by this repository's pull-request protocol and files no follow-ups as issues.
 
+## [0.3.0] - 2026-10-19
+
+### Changed
+
+- **Breaking:** `cloudflare-zone`: Universal SSL is always off (`cloudflare_universal_ssl_setting`), so the zone's CAA
+  records are the only certificate authorities that can issue for it. Cloudflare otherwise publishes hidden CAA records
+  for its own CAs. The token that applies the module needs *Zone → SSL and Certificates → Edit*, and the cloudflare
+  provider must be `>= 5.13`.
+
 ## [0.2.0] - 2026-10-18
 
 ### Added
@@ -46,5 +55,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `modules`: Stateful components default to `deletion_protection = true`.
 
 [unreleased]: https://github.com/NCodeGroup/identity-platform/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/NCodeGroup/identity-platform/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/NCodeGroup/identity-platform/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/NCodeGroup/identity-platform/releases/tag/v0.1.0
