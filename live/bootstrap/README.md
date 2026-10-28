@@ -176,7 +176,7 @@ see [Releasing](../../README.md#releasing).
 | ---- | ------ | ------- |
 | backup\_bucket | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-backup-bucket | v0.3.0 |
 | github\_oidc | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-github-oidc | v0.3.0 |
-| repository | git::https://github.com/NCodeGroup/identity-platform.git//modules/github-repository | v0.3.0 |
+| repository | git::https://github.com/NCodeGroup/identity-platform.git//modules/github-repository | v0.3.1 |
 | secrets\_key | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-kms-key | v0.3.0 |
 | state\_backend | git::https://github.com/NCodeGroup/identity-platform.git//modules/aws-state-backend | v0.3.0 |
 | tags | git::https://github.com/NCodeGroup/identity-platform.git//modules/tags | v0.3.0 |
