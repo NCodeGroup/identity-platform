@@ -1,11 +1,14 @@
 # Written by Copier; never edit by hand. Change an answer with .template\Update-Project.ps1 -Data.
-_commit: v0.37.0
-_src_path: https://github.com/polewskm/project-template.git
+_commit: v0.41.1
+_src_path: https://github.com/NCodeGroup/project-template.git
 build_command: ''
+code_review: true
 git_host: github
 project_description: Infrastructure as code for the hosted NCode.Identity platform
     at nidentity.io
 project_name: identity-platform
+project_owned_files:
+- .github/dependabot.yml
 stack: other
 test_command: pwsh -NoProfile -File ./build/tests/agent-customizations.tests.ps1
 workflow_tools:
