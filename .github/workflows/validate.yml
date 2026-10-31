@@ -69,13 +69,17 @@ jobs:
             exit 1
           fi
 
+      # tofu exits 0 on a warning; build/tofu-strict.sh fails on one, so warnings fail validation like errors.
+      - name: The warning gate fails on a warning
+        run: bash build/tests/tofu-strict.tests.sh
+
       - name: Components
         run: |
           for dir in modules/*/; do
             echo "::group::${dir}"
-            tofu -chdir="$dir" init -backend=false
-            tofu -chdir="$dir" validate
-            tofu -chdir="$dir" test
+            bash build/tofu-strict.sh -chdir="$dir" init -backend=false
+            bash build/tofu-strict.sh -chdir="$dir" validate
+            bash build/tofu-strict.sh -chdir="$dir" test
             echo "::endgroup::"
           done
 
@@ -83,9 +87,9 @@ jobs:
         run: |
           for dir in live/*/; do
             echo "::group::${dir}"
-            tofu -chdir="$dir" init -backend=false -lockfile=readonly
-            tofu -chdir="$dir" validate
-            tofu -chdir="$dir" test
+            bash build/tofu-strict.sh -chdir="$dir" init -backend=false -lockfile=readonly
+            bash build/tofu-strict.sh -chdir="$dir" validate
+            bash build/tofu-strict.sh -chdir="$dir" test
             echo "::endgroup::"
           done
 
