@@ -8,6 +8,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- `ci`: A warning from `tofu init`, `validate` or `test` fails the `validate` check like an error
+  (`build/tofu-strict.sh`, tested by `build/tests/tofu-strict.tests.sh`). OpenTofu exits 0 on a warning, so warnings
+  passed before.
+
+### Fixed
+
+- `bootstrap`: The lock file records the components' current provider constraints (`cloudflare/cloudflare >= 5.13.0`,
+  from `cloudflare-zone` v0.3.1) and every platform's checksums. `init -lockfile=readonly` warned that the lock file
+  was out of date on every run.
+
 - `bootstrap`: Consumes the components at v0.3.1 and turns on the repository's auto-merge (`allow_auto_merge = true`),
   so a pull request can be set to merge on its own once everything the default branch ruleset requires has passed.
 
