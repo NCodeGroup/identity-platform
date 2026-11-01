@@ -12,11 +12,13 @@ every `.github/instructions/*.instructions.md` file on its own. Where this repos
 this repository's win.
 
 - @.github/instructions/project-template.instructions.md — the plan-then-execute workflow and base conventions, from
-  the [project template](https://github.com/polewskm/project-template). Template updates replace it; never edit it.
+  the [project template](https://github.com/NCodeGroup/project-template). Template updates replace it; never edit it.
 - @.github/instructions/identity-platform.instructions.md — posture, security defaults, the no-live-infrastructure
   rule, where knowledge lives, commit attribution, and the pull-request protocol.
 - `.github/instructions/opentofu.instructions.md` — OpenTofu conventions; read it before editing `*.tf` or
   `*.tftest.hcl` files.
+- `docs/decisions/project-template/` — the project template's decision records; read the ones a change touches.
+  The overrides under [Rules and conventions](#rules-and-conventions) take precedence.
 
 ## Layout
 
@@ -24,16 +26,23 @@ this repository's win.
 | ----------------------- | ----------------------------------------------------------------------------------------------- |
 | `modules/<component>/`  | One concern each, no platform-specific defaults, tested with mocked providers                   |
 | `live/<root>/`          | Roots for the platform's environments; `bootstrap` is applied by hand, `global` by CI           |
-| `.github/workflows/`    | `validate` (required), `deploy` (plan on pull request, apply after merge), `ci` (attribution)   |
+| `.github/workflows/`    | `validate` (required), `deploy` (plan; apply on merge), `ci`, `code-review`, `template-update`  |
 | `.github/instructions/` | Scoped coding conventions, auto-applied by path                                                 |
 | `.claude/`              | Claude Code commands, `plan-executor` agent, and settings; template-owned except settings       |
 | `.template/`            | Project-template scripts such as `Update-Project.ps1` and `Get-PlanState.ps1`; template-owned   |
+| `docs/`                 | `decisions/project-template/`: the project template's decision records; template-owned          |
 
 ## Rules and conventions
 
 - Decisions and pending work live in the library repository — its
   [`docs/adr/`](https://github.com/NCodeGroup/Identity/tree/main/docs/adr) and
   [`BACKLOG.md`](https://github.com/NCodeGroup/Identity/blob/main/BACKLOG.md).
+- This repository overrides two of the project template's decisions in `docs/decisions/project-template/`: pending
+  work is a library backlog item, not an issue here (ADR-0007), and a change consumers can observe starts as a
+  library backlog item, with its decision recorded as a library ADR before or with the pull request, not in
+  `docs/decisions/` (ADR-0010).
+  [Where knowledge lives](.github/instructions/identity-platform.instructions.md#where-knowledge-lives) states the
+  rule.
 
 ## Local checks
 
