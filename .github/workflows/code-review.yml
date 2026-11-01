@@ -57,7 +57,8 @@ jobs:
     permissions:
       id-token: write
       contents: read
-      # The issues a pull request closes are context for its intent.
+      # The issues a pull request closes are context for its intent, and synthesis links a finding to an open issue
+      # that already tracks it.
       issues: read
       pull-requests: read
     steps:

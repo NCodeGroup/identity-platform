@@ -8,7 +8,15 @@ updates:
     cooldown:
       default-days: 7
     groups:
+      # Dependabot puts an update in the first group that matches it, so this one comes before the catch-all group:
+      # code-review-auto-merge.yml acts only on a pull request whose one change is the NCode Review pin.
+      ncode-review:
+        patterns: ["NCodeGroup/code-review"]
       actions:
+        patterns: ["*"]
+      # Security updates, which come whenever an advisory affects a dependency, get a pull request of their own.
+      actions-security:
+        applies-to: security-updates
         patterns: ["*"]
 
   - package-ecosystem: opentofu
@@ -23,6 +31,9 @@ updates:
       providers:
         patterns: ["*"]
         group-by: dependency-name
+      providers-security:
+        applies-to: security-updates
+        patterns: ["*"]
 
   - package-ecosystem: pre-commit
     directory: /
@@ -30,3 +41,7 @@ updates:
       interval: monthly
     cooldown:
       default-days: 7
+    groups:
+      hooks-security:
+        applies-to: security-updates
+        patterns: ["*"]
