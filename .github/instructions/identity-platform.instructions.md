@@ -53,7 +53,10 @@ plan or apply output into the repository.
 
 ## Where knowledge lives
 
-This repository keeps no ADRs or backlog of its own. The platform's **decisions** are ADRs in the library repository's
+This repository records no decisions and keeps no backlog of its own: `docs/decisions/project-template/` holds only
+the project template's decision records, which template updates replace, and
+[`AGENTS.md`](../../AGENTS.md#rules-and-conventions) lists the two this repository overrides. The platform's
+**decisions** are ADRs in the library repository's
 [`docs/adr/`](https://github.com/NCodeGroup/Identity/tree/main/docs/adr) (for example ADR-0131 to ADR-0135), and its
 **pending work** is in the library's [`BACKLOG.md`](https://github.com/NCodeGroup/Identity/blob/main/BACKLOG.md) (for
 example `F46`, `F48`). Durable knowledge is captured in versioned files, never left only in an agent's volatile memory

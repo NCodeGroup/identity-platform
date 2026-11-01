@@ -7,7 +7,8 @@ The repository is public on purpose: the platform's security must not depend on 
 credentials, state, plans, or backups — CI authenticates with short-lived OIDC tokens and reads vendor tokens from
 encrypted SSM parameters
 ([ADR-0132](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0132-platform-infrastructure-as-code-is-public-on-github.md)).
-Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
+Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md); [CONTRIBUTING.md](CONTRIBUTING.md) says
+how to propose a change.
 
 ## Layout
 
@@ -186,8 +187,10 @@ release; everything else — docs, CI, the live roots, and a component's README 
 ## Working with agents
 
 Coding agents start from [AGENTS.md](AGENTS.md), which lists the instruction files they load. The plan-and-execute
-workflow files come from the [project template](https://github.com/polewskm/project-template), and
-`.\.template\Update-Project.ps1` updates them; `/plan-template-update` plans that update from a trial run first.
+workflow files come from the [project template](https://github.com/NCodeGroup/project-template), and
+`.\.template\Update-Project.ps1` updates them; `/plan-template-update` plans that update from a trial run first. The
+weekly `template-update` workflow opens an issue labeled `template-update` when a newer template version is out, and
+closes it once the repository has updated.
 Multi-step changes run as plan-and-execute: Claude Opus plans into `PLAN.md`, Claude Sonnet 5.5 executes it one
 verified step at a time, and Opus re-plans any step that comes back
 ([ADR-0170](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0170-agent-work-is-planned-on-a-frontier-model-and-executed-step-by-step-on-a-cheaper-one.md)).
