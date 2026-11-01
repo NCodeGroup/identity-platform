@@ -35,12 +35,19 @@ this repository's win.
 ## Rules and conventions
 
 - Decisions and pending work live in the library repository — its
-  [`docs/adr/`](https://github.com/NCodeGroup/Identity/tree/main/docs/adr) and
-  [`BACKLOG.md`](https://github.com/NCodeGroup/Identity/blob/main/BACKLOG.md).
-- This repository overrides two of the project template's decisions in `docs/decisions/project-template/`: pending
-  work is a library backlog item, not an issue here (ADR-0007), and a change consumers can observe starts as a
-  library backlog item, with its decision recorded as a library ADR before or with the pull request, not in
-  `docs/decisions/` (ADR-0010).
+  [`docs/decisions/`](https://github.com/NCodeGroup/Identity/tree/main/docs/decisions) and
+  [issues](https://github.com/NCodeGroup/Identity/issues).
+- This repository overrides three of the project template's decisions in `docs/decisions/project-template/`:
+  - ADR-0005: `main` takes only squash merges, with linear history, not merge commits or rebases, so each pull
+    request's title and body become its one commit on `main`; the `Commit attribution` check on the pull request
+    keeps agent trailers out
+    ([Pull requests](.github/instructions/identity-platform.instructions.md#pull-requests)).
+  - ADR-0007: pending work is an issue in the library repository, not here, and `/ship-plan` files a plan's
+    follow-ups there.
+  - ADR-0010: a change consumers can observe starts as a library issue, and its decision is recorded as a library ADR
+    before or with the pull request, not in `docs/decisions/`; `/analyze-decision`, which writes a record there, isn't
+    used here.
+
   [Where knowledge lives](.github/instructions/identity-platform.instructions.md#where-knowledge-lives) states the
   rule.
 
@@ -104,8 +111,9 @@ release tags components, by hand and only when the user asks, after a pull reque
 Changelog entries are written for whoever consumes the components and roots: each starts with the component, root or
 area (`ci`, `agents`, `docs`) in backticks, and a breaking one with `**Breaking:**`. `pr-format` names the
 [pull-request protocol](.github/instructions/identity-platform.instructions.md#pull-requests), which sets each pull
-request's title and description. `follow-ups` is `none` because pending work goes to the library's backlog, not to
-issues here. `gate` stays `none`: the `validate` workflow runs the [local checks](#local-checks) on every pull request.
+request's title and description. `follow-ups` names `NCodeGroup/Identity`, because pending work is an issue in the
+library repository, not here. `gate` stays `none`: the `validate` workflow runs the [local checks](#local-checks) on
+every pull request.
 `review-bots` names `ncode-review`, the bot [`code-review`](.github/workflows/code-review.yml) runs, and `prelude`
 stays `none`: the tools are on `PATH` once [Working locally](README.md#working-locally) installs them.
 
@@ -113,7 +121,7 @@ stays `none`: the tools are on `PATH` once [Working locally](README.md#working-l
 - release: none
 - changelog: CHANGELOG.md
 - draft: no
-- follow-ups: none
+- follow-ups: NCodeGroup/Identity
 - follow-up-label: follow-up
 - gate: none
 - protect: none
@@ -125,7 +133,7 @@ stays `none`: the tools are on `PATH` once [Working locally](README.md#working-l
 ## Plan-and-execute workflow
 
 Multi-step changes run as **plan-and-execute**
-([ADR-0170](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0170-agent-work-is-planned-on-a-frontier-model-and-executed-step-by-step-on-a-cheaper-one.md)):
+([ADR-0170](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0170-agent-work-is-planned-on-a-frontier-model-and-executed-step-by-step-on-a-cheaper-one.md)):
 Claude Opus plans into a root `PLAN.md`, Claude Sonnet 5.5 executes it one verified step at a time, and
 any step that needs a decision comes back to Opus to be re-planned.
 
@@ -201,5 +209,5 @@ matching skills already exist. Use **Ignore** for the workspace **Convert Prompt
 **Show Ignored Migrations** restores it. Generic conversion drops agent/model/tool selection and adds
 `disable-model-invocation: true`, which is outside the supported skill configuration. User-profile migration entries
 are separate and must be reviewed individually. The rationale and completed decision are in the library's
-[ADR-0170](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0170-agent-work-is-planned-on-a-frontier-model-and-executed-step-by-step-on-a-cheaper-one.md#dual-runtime-customization-contract);
+[ADR-0170](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0170-agent-work-is-planned-on-a-frontier-model-and-executed-step-by-step-on-a-cheaper-one.md#dual-runtime-customization-contract);
 no upstream fix is required to support either runtime.

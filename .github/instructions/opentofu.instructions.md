@@ -37,7 +37,7 @@ reasoning behind them is in the README's Conventions section and the library rep
   `component` (its directory name), `role`, `data_classification`, and
   `deletion_protection = tostring(var.deletion_protection)` — then applies `local.tags` to every taggable resource.
 - Tag keys are `snake_case` and values are static, so plans never drift
-  ([ADR-0135](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0135-one-resource-tagging-strategy-across-every-vendor.md));
+  ([ADR-0135](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0135-one-resource-tagging-strategy-across-every-vendor.md));
   the shared tags come from the [`tags`](../../modules/tags) component.
 
 ## Deletion protection
@@ -76,7 +76,7 @@ replaced.
 - Consume components only by released tag:
   `source = "git::https://github.com/NCodeGroup/identity-platform.git//modules/<name>?ref=vX.Y.Z"`. `validate` rejects
   a local path
-  ([ADR-0133](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0133-we-ship-and-run-the-same-deployment-artifacts.md)).
+  ([ADR-0133](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0133-we-ship-and-run-the-same-deployment-artifacts.md)).
 - The `s3` backend uses `use_lockfile = true`, and the `encryption` block enforces `aes_gcm` with the KMS key provider
   for both `state` and `plan`.
 - Providers are configured in `providers.tf` with credentials from the environment only; a comment says which variable

@@ -31,11 +31,11 @@ merge, and [`live/bootstrap`](live/bootstrap) is applied by the owner.
 ## Make a Change
 
 1. Pending work and decisions live in the library repository: its
-   [`BACKLOG.md`](https://github.com/NCodeGroup/Identity/blob/main/BACKLOG.md) and
-   [`docs/adr/`](https://github.com/NCodeGroup/Identity/tree/main/docs/adr). A change consumers can observe, such as
-   a component's inputs or outputs, a forced replacement or a live root's resources, starts as a backlog item there,
-   and its decision is recorded as an ADR there before or with the pull request that builds it. An issue here is
-   welcome for a bug or a question.
+   [issues](https://github.com/NCodeGroup/Identity/issues) and
+   [`docs/decisions/`](https://github.com/NCodeGroup/Identity/tree/main/docs/decisions). A change consumers can
+   observe, such as a component's inputs or outputs, a forced replacement or a live root's resources, starts as an
+   issue there, and its decision is recorded as an ADR there before or with the pull request that builds it. Report a
+   bug or ask a question there too.
 2. Work on a short-lived branch from `main`.
 3. Add an entry for each change consumers can see to [CHANGELOG.md](CHANGELOG.md), under `## [Unreleased]`, in the
    [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/) format: each starts with the component, root or area
@@ -71,5 +71,5 @@ change written by hand.
 ## Maintainers and Scope
 
 The repository's owners maintain identity-platform: they review pull requests, merge them and tag releases.
-identity-platform covers what [README.md](README.md) describes; a change outside that starts as an item in the
-library's backlog.
+identity-platform covers what [README.md](README.md) describes; a change outside that starts as an issue in the
+library repository.

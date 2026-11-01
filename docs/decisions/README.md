@@ -1,7 +1,7 @@
 # Architecture Decision Records
 
 This repository records no decisions of its own. The platform's decisions are architecture decision records in the
-library repository's [`docs/adr/`](https://github.com/NCodeGroup/Identity/tree/main/docs/adr), and a new one is added
+library repository's [`docs/decisions/`](https://github.com/NCodeGroup/Identity/tree/main/docs/decisions), and a new one is added
 there as its own change, as
 [Where knowledge lives](../../.github/instructions/identity-platform.instructions.md#where-knowledge-lives) says.
 

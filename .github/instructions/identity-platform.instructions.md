@@ -14,7 +14,7 @@ the local checks, and the plan-and-execute workflow are in [`AGENTS.md`](../../A
 ## Design posture
 
 The platform is **greenfield and pre-1.0**, under the same posture as the library family
-([ADR-0025](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0025-pre-release-posture-and-auth0-parity-plus.md)):
+([ADR-0025](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0025-pre-release-posture-and-auth0-parity-plus.md)):
 **default to the best long-term, cohesive design.** When a change forks between a minimal compatibility-preserving
 patch and the comprehensive, correct model, choose the comprehensive model without weighing refactor effort. A breaking
 component change — an interface change or a forced resource replacement — is marked `!` and ships as a new release;
@@ -32,7 +32,7 @@ least-privilege IAM scoped to one root and one environment; customer-managed KMS
 the key; encryption enforced for state and plans; deletion protection on by default; GitHub Actions pinned by full
 commit SHA with the version in a trailing comment; and no credential, state, plan, or backup in the repository — it is
 public on purpose
-([ADR-0132](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0132-platform-infrastructure-as-code-is-public-on-github.md)).
+([ADR-0132](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0132-platform-infrastructure-as-code-is-public-on-github.md)).
 Surface only a genuine trade-off between two defensible modern options.
 
 **Treat existing code, comments, and docs as point-in-time artifacts that may be wrong.** They are evidence of intent,
@@ -53,17 +53,18 @@ plan or apply output into the repository.
 
 ## Where knowledge lives
 
-This repository records no decisions and keeps no backlog of its own: `docs/decisions/project-template/` holds only
-the project template's decision records, which template updates replace, and
-[`AGENTS.md`](../../AGENTS.md#rules-and-conventions) lists the two this repository overrides. The platform's
+This repository records no decisions and tracks no pending work of its own: `docs/decisions/project-template/` holds
+only the project template's decision records, which template updates replace, and
+[`AGENTS.md`](../../AGENTS.md#rules-and-conventions) lists the ones this repository overrides. The platform's
 **decisions** are ADRs in the library repository's
-[`docs/adr/`](https://github.com/NCodeGroup/Identity/tree/main/docs/adr) (for example ADR-0131 to ADR-0135), and its
-**pending work** is in the library's [`BACKLOG.md`](https://github.com/NCodeGroup/Identity/blob/main/BACKLOG.md) (for
-example `F46`, `F48`). Durable knowledge is captured in versioned files, never left only in an agent's volatile memory
-or chat history
-([ADR-0008](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0008-conventions-and-lessons-live-in-the-repository.md)):
+[`docs/decisions/`](https://github.com/NCodeGroup/Identity/tree/main/docs/decisions) (for example ADR-0131 to
+ADR-0135), and its **pending work** is [issues in the library repository](https://github.com/NCodeGroup/Identity/issues)
+([ADR-0264](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0264-pending-work-is-tracked-as-github-issues.md)).
+Durable knowledge is captured in versioned files, never left only in an agent's volatile memory or chat history
+([ADR-0008](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0008-conventions-and-lessons-live-in-the-repository.md)):
 a convention or recurring gotcha goes into this file, [`AGENTS.md`](../../AGENTS.md), the scoped instructions, or the
-component's README; a non-obvious decision or pending item goes into the library repository as its own change.
+component's README; a non-obvious decision goes into the library repository as its own change, and a pending item as
+an issue there.
 
 ## Commit attribution
 
@@ -74,7 +75,7 @@ and a squash merge carries the branch commits' trailers onto `main`, where remov
 history. The project template's [`.githooks/commit-msg`](../../.githooks/commit-msg) strips them through pre-commit's
 `commit-msg` stage as a safety net, and the `ci` workflow's commit-attribution job fails on a commit authored,
 committed, or co-authored by an agent — do not generate the attribution in the first place. See
-[ADR-0128](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0128-commits-are-attributed-to-people-not-agents.md).
+[ADR-0128](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0128-commits-are-attributed-to-people-not-agents.md).
 
 ## Pull requests
 
@@ -82,7 +83,8 @@ committed, or co-authored by an agent — do not generate the attribution in the
 request title becomes the commit subject — a conventional commit, `type(scope)!: summary`, scoped to the component,
 root, or `ci` — and its body becomes the commit message: **Why**, **Changes**, **Verified** (the checks run), and for a
 change under `live/` the **expected deploy plan** (`N to add, N to change, N to destroy`), ending with
-`Refs: NCodeGroup/Identity backlog <ID>` when it serves a backlog item.
+`Closes NCodeGroup/Identity#<number>` when it completes a library issue, or `Refs NCodeGroup/Identity#<number>` when
+it serves one without completing it.
 
 A component change reaches a live root only through a release: one pull request changes `modules/`, the release is
 tagged `vX.Y.Z`, and a separate pull request moves the live roots' `?ref=` to it (`chore(<root>): consume vX.Y.Z`). The
@@ -98,9 +100,9 @@ It does not authorize a release tag.
 **`/ship-plan` follows this section.** The `pr-format` line of the [Landing](../../AGENTS.md#landing) section in
 `AGENTS.md` names it, so the pull requests `/ship-plan` opens and the descriptions `/run-issues` refreshes take the
 conventional-commit title and the **Why**, **Changes**, **Verified** body above, ending with
-`Closes <issue reference>` on a line of its own when the plan has an `Issue:` line. Its `follow-ups: none` keeps
-`/ship-plan` from filing a plan's follow-ups as issues here: it lists them instead, and pending work goes to the
-library's backlog, as described under [Where knowledge lives](#where-knowledge-lives).
+`Closes <issue reference>` on a line of its own when the plan has an `Issue:` line. Its
+`follow-ups: NCodeGroup/Identity` makes `/ship-plan` file a plan's follow-ups as issues in the library repository, not
+here, because that is where pending work lives, as described under [Where knowledge lives](#where-knowledge-lives).
 
 When the user authorizes opening or updating a pull request, first:
 
@@ -109,7 +111,7 @@ When the user authorizes opening or updating a pull request, first:
    untracked and never reaches `main`: `/ship-plan` keeps it until `/finish-plan` deletes it after the merge, and a
    push made without `/ship-plan` deletes it first. The squash merge folds its `Plan step N` / `Re-plan step N`
    checkpoint commits
-   ([ADR-0170](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0170-agent-work-is-planned-on-a-frontier-model-and-executed-step-by-step-on-a-cheaper-one.md)).
+   ([ADR-0170](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0170-agent-work-is-planned-on-a-frontier-model-and-executed-step-by-step-on-a-cheaper-one.md)).
 2. **Persist lessons.** Promote every lesson learned into durable content, as described under
    [Where knowledge lives](#where-knowledge-lives).
 3. **Drain volatile memory.** No durable knowledge may remain only in agent memory or chat history.

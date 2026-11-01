@@ -2,7 +2,7 @@
 
 A hardened GitHub repository whose settings live in code: merge policy, security features, Actions restrictions,
 rulesets, and deployment environments
-([ADR-0132](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0132-platform-infrastructure-as-code-is-public-on-github.md)).
+([ADR-0132](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0132-platform-infrastructure-as-code-is-public-on-github.md)).
 
 - **Merging:** squash only (pull request title and body become the commit), head branches deleted after merge.
   Auto-merge is off unless `allow_auto_merge` is set; an auto-merged pull request still waits for everything the
