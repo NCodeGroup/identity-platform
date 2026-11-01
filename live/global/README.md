@@ -22,7 +22,7 @@ fails if the real world has drifted from `main`.
 | apply | `<name_prefix>-apply-production` | `/<repository>/global/cloudflare-api-token` |
 
 AWS sessions are named `gh-<run_id>-<run_attempt>`, so CloudTrail ties every call to its workflow run
-([ADR-0136](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0136-provenance-is-attested-on-workloads-and-audited-for-infrastructure.md)).
+([ADR-0136](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0136-provenance-is-attested-on-workloads-and-audited-for-infrastructure.md)).
 
 ## Before the first apply
 

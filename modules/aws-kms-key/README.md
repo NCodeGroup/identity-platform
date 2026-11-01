@@ -7,7 +7,7 @@ deletion, or restricted to specific roles, so the platform uses its own key wher
 - Automatic yearly rotation; deletion waits `deletion_window_in_days` (7–30, default 30) after it is scheduled.
 - The alias can't start with `aws/`, which AWS reserves for its managed keys.
 - `role` and `data_classification` become the key's tags
-  ([ADR-0135](https://github.com/NCodeGroup/Identity/blob/main/docs/adr/0135-one-resource-tagging-strategy-across-every-vendor.md)).
+  ([ADR-0135](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0135-one-resource-tagging-strategy-across-every-vendor.md)).
 - While `deletion_protection` is `true`, a guard resource makes `tofu destroy` fail.
 
 ## Usage
