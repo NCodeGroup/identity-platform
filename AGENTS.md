@@ -80,12 +80,23 @@ default. `draft`: `no`; `yes` opens every pull request as a draft, as `/ship-pla
 files a plan's follow-ups as issues in this repository; `<owner/repo>` files them in that repository; `none` files
 none, and `/ship-plan` lists them for you to record. `follow-up-label`: the label those issues get, `follow-up` by
 default; write a name with spaces as it is, such as `tech debt`. `gate`: `none`; a command, such as
-`./build/dod.ps1 -Fast -Affected`, that `/ship-plan` and `/run-issues` run from the repository root before each push,
-stopping when it exits non-zero or changes a file. `protect`: `none`; `hook` makes `.githooks/pre-push` refuse any
-push to the default branch, for a host that can't require pull requests, such as a private repository on GitHub Free.
+`./build/dod.ps1 -Fast`, that `/ship-plan` and `/run-issues` run from the repository root before each push, stopping
+when it exits non-zero or changes a file. `protect`: `none`; `hook` makes `.githooks/pre-push` refuse any push to the
+default branch, for a host that can't require pull requests, such as a private repository on GitHub Free.
 `pr-format`: `none`; `<file>#<heading>`, such as `AGENTS.md#Pull requests`, names the section that sets the title and
-description of the pull requests `/ship-plan` opens, which still end with their `Closes` lines. `/run-issues` runs only
-when the host requires pull requests into the default branch, or `protect` is `hook` and the hooks are enabled.
+description of the pull requests `/ship-plan` opens, which still end with their `Closes` lines. `review-bots`: the
+review bots, by login and separated by commas, whose findings `/run-issues` and `/address-feedback` may fix,
+`ncode-review` by default, or `none`; `/run-issues` acts only on NCode Review's `blocker` and `should-fix` findings,
+and neither ever fixes a bot's finding on CI, the template, agent configuration, the build or the dependencies.
+`max-review-rounds`: `3`; after that many rounds of review feedback on a pull request, `/run-issues` recommends the
+merge and leaves the bots' further findings as follow-ups. `prelude`: `none`; one PowerShell command that sets up the
+shell the workflow's commands run in, such as `./build/env.ps1`, a script in the repository, or `nvs use 26`, to put
+a tool installed through a version manager on `PATH`. `/ship-plan` and `/run-issues` run it before the gate, and
+executors and coordinators before each Done-when command, dot-sourced in the same PowerShell; a plan names it under
+Context for the executor, so no step repeats it. When it fails, they stop and show its error. Write it on one line,
+without a leading `. ` or `& ` operator, a `#` comment, or `;`, `|`, `&`, `&&` or `||`; `.template/Get-PlanState.ps1`
+prints any other value as `prelude=invalid`, and `/ship-plan` stops on it. `/run-issues` runs only when the host
+requires pull requests into the default branch, or `protect` is `hook` and the hooks are enabled.
 
 In this repository, `main`'s ruleset requires pull requests, so `protect` stays `none`. `release` stays `none`: a
 release tags components, by hand and only when the user asks, after a pull request moves the entries under
@@ -95,6 +106,8 @@ area (`ci`, `agents`, `docs`) in backticks, and a breaking one with `**Breaking:
 [pull-request protocol](.github/instructions/identity-platform.instructions.md#pull-requests), which sets each pull
 request's title and description. `follow-ups` is `none` because pending work goes to the library's backlog, not to
 issues here. `gate` stays `none`: the `validate` workflow runs the [local checks](#local-checks) on every pull request.
+`review-bots` names `ncode-review`, the bot [`code-review`](.github/workflows/code-review.yml) runs, and `prelude`
+stays `none`: the tools are on `PATH` once [Working locally](README.md#working-locally) installs them.
 
 - integrate: pull-request
 - release: none
@@ -105,6 +118,9 @@ issues here. `gate` stays `none`: the `validate` workflow runs the [local checks
 - gate: none
 - protect: none
 - pr-format: .github/instructions/identity-platform.instructions.md#Pull requests
+- review-bots: ncode-review
+- max-review-rounds: 3
+- prelude: none
 
 ## Plan-and-execute workflow
 
