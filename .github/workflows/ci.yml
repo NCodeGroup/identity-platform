@@ -12,9 +12,17 @@ on:
 permissions:
   contents: read
 
+# A newer push to a pull request or a topic branch cancels the run it supersedes. A run for a default-branch commit or a
+# merge queue entry is never cancelled: its group holds its commit SHA, because cancel-in-progress: false alone still
+# lets a newer run in the same group cancel a pending one, which would leave that commit without a verdict.
+concurrency:
+  group: ci-${{ github.ref }}-${{ (github.ref == format('refs/heads/{0}', github.event.repository.default_branch) || github.event_name == 'merge_group') && github.sha || 'latest' }}
+  cancel-in-progress: ${{ github.ref != format('refs/heads/{0}', github.event.repository.default_branch) && github.event_name != 'merge_group' }}
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     defaults:
       run:
         shell: pwsh
@@ -22,6 +30,8 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - name: Check the decision index
+        run: ./.template/Test-AdrIndex.ps1
       - name: Test
         run: |
           pwsh -NoProfile -File ./build/tests/agent-customizations.tests.ps1
