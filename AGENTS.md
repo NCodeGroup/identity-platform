@@ -160,6 +160,11 @@ any step that needs a decision comes back to Opus to be re-planned.
 - **Issues and template updates:** `/plan-issue #42` plans one issue, choosing the kind of plan from its labels;
   `/triage-issues <filter>` lists the open issues ready to plan and changes nothing; `/plan-template-update` plans the
   next project-template update from a trial run on a clone. The commands exist in all three runtimes.
+- **Review feedback and conventions:** `/address-feedback <pull request>` answers every open review thread and
+  comment on one pull request and pushes the fixes it judges sound (Claude Code only); `/audit-conventions` sweeps
+  the codebase, or the part a request names, against `AGENTS.md`, its instruction files and the decision records,
+  and ranks what doesn't follow them without changing a file (all three runtimes). The weekly `template-update`
+  workflow opens a `template-update` issue when a newer project-template version is out; `/plan-issue` plans it.
 - **Work on a branch.** The orchestrator commits a checkpoint per step; the squash merge folds them, and the pull
   request title and body supply the commit on `main`.
 - **Done-when commands** prove one step with a local check — for example `tofu -chdir=modules/<name> test` after a
@@ -172,13 +177,13 @@ any step that needs a decision comes back to Opus to be re-planned.
   [`identity-platform.instructions.md`](.github/instructions/identity-platform.instructions.md) promotes its Decisions
   before the pull request opens, and `/finish-plan` deletes it after the merge.
 - The agents, prompts, skills and Claude Code commands under `.github/` and `.claude/` come from the
-  [project template](https://github.com/polewskm/project-template) and are **template-owned**: never hand-edit them;
+  [project template](https://github.com/NCodeGroup/project-template) and are **template-owned**: never hand-edit them;
   `.\.template\Update-Project.ps1` updates them to the template's newest release. Repository rules belong in the
   instruction files, which every agent in the loop already loads.
 
 ### Local and Copilot customizations
 
-**Both session targets are intentionally supported.** The 23 workflow pairs under
+**Both session targets are intentionally supported.** The 24 workflow pairs under
 [`.github/prompts/`](.github/prompts/) and [`.github/skills/`](.github/skills/) are runtime adapters, not unfinished
 migration work. Local prompts retain their agent/model/tool selections; Copilot skills use the session model.
 Duplicate commands in Local's slash menu and automatic skill selection are accepted behaviors. Skill descriptions
