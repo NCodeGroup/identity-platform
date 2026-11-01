@@ -59,18 +59,24 @@ every pull request; run the same before opening one:
 
 ```powershell
 pwsh -NoProfile -File .\build\tests\agent-customizations.tests.ps1
+bash build/tests/tofu-strict.tests.sh
 
 tofu fmt -check -recursive
 
 # Each component under modules/, and each root under live/ (add -lockfile=readonly to a live root's init).
-tofu -chdir=modules/<name> init -backend=false
-tofu -chdir=modules/<name> validate
-tofu -chdir=modules/<name> test
+bash build/tofu-strict.sh -chdir=modules/<name> init -backend=false
+bash build/tofu-strict.sh -chdir=modules/<name> validate
+bash build/tofu-strict.sh -chdir=modules/<name> test
 
 # The generated README sections are current.
 terraform-docs --config .terraform-docs.yml --recursive --recursive-path modules --recursive-include-main=false --output-check .
 terraform-docs --config .terraform-docs.yml --recursive --recursive-path live --recursive-include-main=false --output-check .
 ```
+
+A warning fails `validate` like an error. OpenTofu exits 0 on a warning, so `init`, `validate` and `test` run through
+[`build/tofu-strict.sh`](build/tofu-strict.sh), which exits 1 when tofu prints one; a plain `tofu validate` can pass
+locally where `validate` fails. On Windows, `bash` must be Git Bash: when it starts WSL instead, call Git's
+`bin\bash.exe` by its full path.
 
 `validate` also rejects a `source` under `live/` that is not a registry module or a released component
 (`git::https://github.com/NCodeGroup/identity-platform.git//modules/<name>?ref=vX.Y.Z`). After changing variables or

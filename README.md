@@ -105,12 +105,16 @@ Check a component or root the way CI does:
 
 ```powershell
 pwsh -NoProfile -File .\build\tests\agent-customizations.tests.ps1
+bash build/tests/tofu-strict.tests.sh
 
 tofu fmt -check -recursive
-tofu -chdir=modules/tags init -backend=false
-tofu -chdir=modules/tags validate
-tofu -chdir=modules/tags test
+bash build/tofu-strict.sh -chdir=modules/tags init -backend=false
+bash build/tofu-strict.sh -chdir=modules/tags validate
+bash build/tofu-strict.sh -chdir=modules/tags test
 ```
+
+`build/tofu-strict.sh` runs tofu and fails on a warning, as `validate` does, because OpenTofu exits 0 on one. On
+Windows it needs Git Bash's `bash`, not WSL's.
 
 Regenerate the docs after changing variables or outputs:
 

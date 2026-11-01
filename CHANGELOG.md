@@ -22,6 +22,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- `ci`: A warning from `tofu init`, `validate` or `test` fails the `validate` check like an error
+  (`build/tofu-strict.sh`, tested by `build/tests/tofu-strict.tests.sh`). OpenTofu exits 0 on a warning, so warnings
+  passed before.
 - `bootstrap`: Consumes the components at v0.3.1 and turns on the repository's auto-merge (`allow_auto_merge = true`),
   so a pull request can be set to merge on its own once everything the default branch ruleset requires has passed.
 - `agents`: The plan-and-execute workflow follows project-template v0.49.0. The Landing section adds `review-bots`,
@@ -37,6 +40,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `docs`: Links to the library's decision records point at its `docs/decisions/` folder, and pending work at its
   issues, since the library moved its ADRs out of `docs/adr/` and replaced `BACKLOG.md` with GitHub issues
   ([ADR-0264](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0264-pending-work-is-tracked-as-github-issues.md)).
+- `bootstrap`: The lock file records the components' current provider constraints (`cloudflare/cloudflare >= 5.13.0`,
+  from `cloudflare-zone` v0.3.1) and every platform's checksums. `init -lockfile=readonly` warned that the lock file
+  was out of date on every run.
+- `global`: The lock file records every checksum the registry publishes for `cloudflare/cloudflare` 5.28.1.
+  `init -lockfile=readonly` warned that the lock file was out of date on every run.
 
 ## [0.3.1] - 2026-10-28
 
