@@ -38,7 +38,7 @@ this repository's win.
   [`docs/decisions/`](https://github.com/NCodeGroup/Identity/tree/main/docs/decisions) and
   [issues](https://github.com/NCodeGroup/Identity/issues).
 - This repository overrides three of the project template's decisions in `docs/decisions/project-template/`:
-  - ADR-0005: `main` takes only squash merges, with linear history, not merge commits or rebases, so each pull
+  - ADR-0013: `main` takes only squash merges, with linear history, not merge commits or rebases, so each pull
     request's title and body become its one commit on `main`; the `Commit attribution` check on the pull request
     keeps agent trailers out
     ([Pull requests](.github/instructions/identity-platform.instructions.md#pull-requests)).
@@ -175,7 +175,8 @@ any step that needs a decision comes back to Opus to be re-planned.
   `/triage-issues <filter>` lists the open issues ready to plan and changes nothing; `/plan-template-update` plans the
   next project-template update from a trial run on a clone. The commands exist in all three runtimes.
 - **Review feedback and conventions:** `/address-feedback <pull request>` answers every open review thread and
-  comment on one pull request and pushes the fixes it judges sound (Claude Code only); `/audit-conventions` sweeps
+  comment on one pull request and pushes the fixes it judges sound, and `/run-feedback <pull request>` repeats that
+  round every five minutes until the pull request merges or closes (both Claude Code only); `/audit-conventions` sweeps
   the codebase, or the part a request names, against `AGENTS.md`, its instruction files and the decision records,
   and ranks what doesn't follow them without changing a file (all three runtimes). The weekly `template-update`
   workflow opens a `template-update` issue when a newer project-template version is out; `/plan-issue` plans it.
