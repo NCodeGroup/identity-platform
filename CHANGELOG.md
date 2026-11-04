@@ -13,21 +13,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   Claude Code, answers every open comment on one pull request and pushes the fixes it judges sound.
 - `ci`: The `template-update` workflow keeps one `template-update` issue open while a newer project-template version
   is out. `code-review-auto-merge` turns on auto-merge for a Dependabot pull request that only moves the NCode Review
-  pin; until [NCodeGroup/project-template#195](https://github.com/NCodeGroup/project-template/issues/195) is fixed its
-  run fails here, since `main` takes only squash merges, and the pull request waits for a person.
+  pin, by a merge method the repository and `main`'s ruleset allow (squash here).
 - `ci`: `copilot-setup-steps` prepares the Copilot cloud agent's runner with OpenTofu and terraform-docs, installed as
   `validate` installs them.
 - `docs`: `CONTRIBUTING.md`, and the project template's decision records in `docs/decisions/project-template/`, with
-  the three this repository overrides (ADR-0005, ADR-0007, ADR-0010) listed in `AGENTS.md`.
+  the three this repository overrides (ADR-0013, ADR-0007, ADR-0010) listed in `AGENTS.md`.
 
 ### Changed
 
+- `ci`: The project template moves from v0.49.0 to v0.61.2. `code-review-auto-merge` picks the merge method from the
+  repository's settings and `main`'s ruleset, so it no longer fails here for lack of a merge commit
+  ([NCodeGroup/project-template#195](https://github.com/NCodeGroup/project-template/issues/195)); the `ci` workflow runs again when a pull request's title or description is edited, and the commit attribution check reads
+  both. `/run-feedback` and the updated `/run-issues` and `/address-feedback` commands, and ADRs 0012 to 0014, come with
+  it.
 - `ci`: A warning from `tofu init`, `validate` or `test` fails the `validate` check like an error
   (`build/tofu-strict.sh`, tested by `build/tests/tofu-strict.tests.sh`). OpenTofu exits 0 on a warning, so warnings
   passed before.
 - `bootstrap`: Consumes the components at v0.3.1 and turns on the repository's auto-merge (`allow_auto_merge = true`),
   so a pull request can be set to merge on its own once everything the default branch ruleset requires has passed.
-- `agents`: The plan-and-execute workflow follows project-template v0.49.0. The Landing section adds `review-bots`,
+- `agents`: The plan-and-execute workflow follows project-template v0.61.2. The Landing section adds `review-bots`,
   `max-review-rounds` and `prelude`, and `Get-PlanState.ps1` makes its network calls at the same time.
 - `ci`: `ci` checks the decision index, cancels a run that a newer push supersedes (never a `main` commit's), and
   stops after 30 minutes. Dependabot gives the NCode Review action, and each ecosystem's security updates, pull
