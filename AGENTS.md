@@ -89,7 +89,7 @@ How `/ship-plan` lands a reviewed plan. `integrate`: `pull-request` pushes the p
 `direct` pushes to the default branch. `release`: `none`; `tag` tags the plan's `Release:` version, or the next free
 one when another plan landed it first; `tag+release` also publishes a release from that version's section of
 `changelog`. `changelog`: the file every plan's last step writes, in the Keep a Changelog format, `CHANGELOG.md` by
-default. `draft`: `no`; `yes` opens every pull request as a draft, as `/ship-plan draft` does. `follow-ups`: `issues`
+default. `draft`: `no`, the default, which a template update never changes, so a project lands as it did; `yes` opens every pull request as a draft, as `/ship-plan draft` does, and `/run-issues` opens its pull requests as drafts either way. `follow-ups`: `issues`
 files a plan's follow-ups as issues in this repository; `<owner/repo>` files them in that repository; `none` files
 none, and `/ship-plan` lists them for you to record. `follow-up-label`: the label those issues get, `follow-up` by
 default; write a name with spaces as it is, such as `tech debt`. `gate`: `none`; a command, such as
@@ -98,11 +98,11 @@ when it exits non-zero or changes a file. `protect`: `none`; `hook` makes `.gith
 default branch, for a host that can't require pull requests, such as a private repository on GitHub Free.
 `pr-format`: `none`; `<file>#<heading>`, such as `AGENTS.md#Pull requests`, names the section that sets the title and
 description of the pull requests `/ship-plan` opens, which still end with their `Closes` lines. `review-bots`: the
-review bots, by login and separated by commas, whose findings `/run-issues` and `/address-feedback` may fix,
+review bots, by login and separated by commas, whose findings `/run-issues`, `/address-feedback` and `/run-feedback` may fix,
 `ncode-review` by default, or `none`; `/run-issues` acts only on NCode Review's `blocker` and `should-fix` findings,
 and neither ever fixes a bot's finding on CI, the template, agent configuration, the build or the dependencies.
-`max-review-rounds`: `3`; after that many rounds of review feedback on a pull request, `/run-issues` recommends the
-merge and leaves the bots' further findings as follow-ups. `prelude`: `none`; one PowerShell command that sets up the
+`max-review-rounds`: `3`; after that many rounds of review feedback on a pull request, `/run-issues` and `/run-feedback` recommend
+the merge, and `/run-issues` leaves the bots' further findings as follow-ups. `prelude`: `none`; one PowerShell command that sets up the
 shell the workflow's commands run in, such as `./build/env.ps1`, a script in the repository, or `nvs use 26`, to put
 a tool installed through a version manager on `PATH`. `/ship-plan` and `/run-issues` run it before the gate, and
 executors and coordinators before each Done-when command, dot-sourced in the same PowerShell; a plan names it under

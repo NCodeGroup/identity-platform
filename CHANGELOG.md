@@ -22,6 +22,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- `ci`: The project template moves from v0.49.0 to v0.61.2. `code-review-auto-merge` now turns on auto-merge by the
+  first method the repository and `main`'s ruleset allow, so it no longer fails here for lack of a merge commit; the
+  `ci` workflow runs again when a pull request's title or description is edited, and the commit attribution check reads
+  both. `/run-feedback` and the updated `/run-issues` and `/address-feedback` commands, and ADRs 0012 to 0014, come with
+  it.
 - `ci`: A warning from `tofu init`, `validate` or `test` fails the `validate` check like an error
   (`build/tofu-strict.sh`, tested by `build/tests/tofu-strict.tests.sh`). OpenTofu exits 0 on a warning, so warnings
   passed before.
