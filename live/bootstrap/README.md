@@ -16,11 +16,11 @@ GitHub Actions.
 | Monthly AWS budget alert                               | Cost guard for the whole account                     |
 
 Decisions behind it:
-[ADR-0132](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0132-platform-infrastructure-as-code-is-public-on-github.md)
+[ADR-1132](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1132-platform-infrastructure-as-code-is-public-on-github.md)
 (public repository, OIDC, state and secrets),
-[ADR-0131](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0131-hosted-platform-environment-model-and-hostname-scheme.md)
+[ADR-1131](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1131-hosted-platform-environment-model-and-hostname-scheme.md)
 (environments and DNS), and
-[ADR-0135](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0135-one-resource-tagging-strategy-across-every-vendor.md)
+[ADR-1135](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1135-one-resource-tagging-strategy-across-every-vendor.md)
 (tags). The end-to-end manual procedure, including the vendor sign-ups this root depends on, is the
 [platform bootstrap runbook](https://github.com/NCodeGroup/Identity/blob/main/docs/platform-bootstrap.md).
 
@@ -145,7 +145,7 @@ apply, by design.
 
 Like every root, this one consumes components only by released version — pinned to a protected, immutable release tag
 (`?ref=vX.Y.Z`), never by local path; CI rejects anything else
-([ADR-0133](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0133-we-ship-and-run-the-same-deployment-artifacts.md),
+([ADR-1133](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1133-we-ship-and-run-the-same-deployment-artifacts.md),
 the member rule). A component change therefore reaches this root in two steps: release it, then bump the `ref` here —
 see [Releasing](../../README.md#releasing).
 

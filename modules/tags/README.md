@@ -1,7 +1,7 @@
 # tags
 
 The shared tags every platform resource carries
-([ADR-0135](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0135-one-resource-tagging-strategy-across-every-vendor.md)),
+([ADR-1135](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1135-one-resource-tagging-strategy-across-every-vendor.md)),
 produced once and rendered in each vendor's format. It has no provider, so any root can call it.
 
 | Output    | Form                                  | Use it for                                             |
@@ -16,7 +16,7 @@ Rules the module enforces:
   changes between plans, or every plan shows tag drift.
 - `environment` is a **platform** environment — exactly `shared`, `lab`, `production`, or `ci`. A customer's `dev` or
   `test` is a tenant, never a platform environment
-  ([ADR-0131](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0131-hosted-platform-environment-model-and-hostname-scheme.md)).
+  ([ADR-1131](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1131-hosted-platform-environment-model-and-hostname-scheme.md)).
 - `owner_email` is a role mailbox, never a person: tags are public.
 
 Components add their own keys (`component`, `role`, `data_classification`, `deletion_protection`) on top of these.
