@@ -17,14 +17,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `ci`: `copilot-setup-steps` prepares the Copilot cloud agent's runner with OpenTofu and terraform-docs, installed as
   `validate` installs them.
 - `docs`: `CONTRIBUTING.md`, and the project template's decision records in `docs/decisions/project-template/`, with
-  the three this repository overrides (ADR-0013, ADR-0007, ADR-0010) listed in `AGENTS.md`.
+  the three this repository overrides (project-template ADR-0013, ADR-0007 and ADR-0010) listed in `AGENTS.md`.
 
 ### Changed
 
 - `ci`: The project template moves from v0.49.0 to v0.61.2. `code-review-auto-merge` picks the merge method from the
   repository's settings and `main`'s ruleset, so it no longer fails here for lack of a merge commit
   ([NCodeGroup/project-template#195](https://github.com/NCodeGroup/project-template/issues/195)); the `ci` workflow runs again when a pull request's title or description is edited, and the commit attribution check reads
-  both. `/run-feedback` and the updated `/run-issues` and `/address-feedback` commands, and ADRs 0012 to 0014, come with
+  both. `/run-feedback` and the updated `/run-issues` and `/address-feedback` commands, and project-template ADRs 0012 to 0014, come with
   it.
 - `ci`: A warning from `tofu init`, `validate` or `test` fails the `validate` check like an error
   (`build/tofu-strict.sh`, tested by `build/tests/tofu-strict.tests.sh`). OpenTofu exits 0 on a warning, so warnings
@@ -43,7 +43,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `docs`: Links to the library's decision records point at its `docs/decisions/` folder, and pending work at its
   issues, since the library moved its ADRs out of `docs/adr/` and replaced `BACKLOG.md` with GitHub issues
-  ([ADR-0264](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0264-pending-work-is-tracked-as-github-issues.md)).
+  ([ADR-1306](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1306-pending-work-is-tracked-as-github-issues-linked-by-address-in-files.md)).
 - `bootstrap`: The lock file records the components' current provider constraints (`cloudflare/cloudflare >= 5.13.0`,
   from `cloudflare-zone` v0.3.1) and every platform's checksums. `init -lockfile=readonly` warned that the lock file
   was out of date on every run.

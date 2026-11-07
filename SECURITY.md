@@ -2,7 +2,7 @@
 
 This repository holds the infrastructure code for the NCode.Identity hosted platform. It is public on purpose: the
 platform's security must not depend on hiding how it is built
-([ADR-0132](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/0132-platform-infrastructure-as-code-is-public-on-github.md)).
+([ADR-1132](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1132-platform-infrastructure-as-code-is-public-on-github.md)).
 Credentials, state, plans, and backups are never stored here.
 
 ## Reporting a vulnerability

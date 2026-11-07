@@ -59,7 +59,7 @@ jobs:
 
       - name: Live roots use released components
         run: |
-          # The member rule (ADR-0133): live/ consumes components only by released, tag-pinned version.
+          # The member rule (ADR-1133): live/ consumes components only by released, tag-pinned version.
           bad=$(grep -rnE '^\s*source\s*=\s*"' live --include='*.tf' \
             | grep -vE 'source\s*=\s*"[a-z0-9-]+/[a-z0-9-]+"' \
             | grep -vE 'source\s*=\s*"git::https://github\.com/NCodeGroup/identity-platform\.git//modules/[a-z0-9-]+\?ref=v[0-9]+\.[0-9]+\.[0-9]+"' || true)
