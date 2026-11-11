@@ -1,7 +1,7 @@
 # cloudflare-zone
 
 A Cloudflare DNS zone with the records every zone should have from day one
-([ADR-1131](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1131-hosted-platform-environment-model-and-hostname-scheme.md)).
+([ADR-1131](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1131-hosted-platform-environment-model-and-hostname-scheme.md)).
 
 - **DNSSEC** on by default. After the zone is active, publish the DS record from the `dnssec` output at the registrar.
 - **CAA** records allow only the listed certificate authorities (Let's Encrypt by default) for both `issue` and

@@ -31,8 +31,8 @@ merge, and [`live/bootstrap`](live/bootstrap) is applied by the owner.
 ## Make a Change
 
 1. Pending work and decisions live in the library repository: its
-   [issues](https://github.com/NCodeGroup/Identity/issues) and
-   [`docs/decisions/`](https://github.com/NCodeGroup/Identity/tree/main/docs/decisions). A change consumers can
+   [issues](https://github.com/NCodeGroup/identity/issues) and
+   [`docs/decisions/`](https://github.com/NCodeGroup/identity/tree/main/docs/decisions). A change consumers can
    observe, such as a component's inputs or outputs, a forced replacement or a live root's resources, starts as an
    issue there, and its decision is recorded as an ADR there before or with the pull request that builds it. Report a
    bug or ask a question there too.
