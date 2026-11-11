@@ -16,13 +16,13 @@ GitHub Actions.
 | Monthly AWS budget alert                               | Cost guard for the whole account                     |
 
 Decisions behind it:
-[ADR-1132](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1132-platform-infrastructure-as-code-is-public-on-github.md)
+[ADR-1132](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1132-platform-infrastructure-as-code-is-public-on-github.md)
 (public repository, OIDC, state and secrets),
-[ADR-1131](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1131-hosted-platform-environment-model-and-hostname-scheme.md)
+[ADR-1131](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1131-hosted-platform-environment-model-and-hostname-scheme.md)
 (environments and DNS), and
-[ADR-1135](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1135-one-resource-tagging-strategy-across-every-vendor.md)
+[ADR-1135](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1135-one-resource-tagging-strategy-across-every-vendor.md)
 (tags). The end-to-end manual procedure, including the vendor sign-ups this root depends on, is the
-[platform bootstrap runbook](https://github.com/NCodeGroup/Identity/blob/main/docs/platform-bootstrap.md).
+[platform bootstrap runbook](https://github.com/NCodeGroup/identity/blob/main/docs/platform-bootstrap.md).
 
 ## When to run it
 
@@ -35,10 +35,10 @@ Decisions behind it:
 
 ## Before you start
 
-1. Finish the [runbook](https://github.com/NCodeGroup/Identity/blob/main/docs/platform-bootstrap.md) sections
-   [1. Domain registrar](https://github.com/NCodeGroup/Identity/blob/main/docs/platform-bootstrap.md#1-domain-registrar-porkbun)
+1. Finish the [runbook](https://github.com/NCodeGroup/identity/blob/main/docs/platform-bootstrap.md) sections
+   [1. Domain registrar](https://github.com/NCodeGroup/identity/blob/main/docs/platform-bootstrap.md#1-domain-registrar-porkbun)
    through
-   [4. AWS](https://github.com/NCodeGroup/Identity/blob/main/docs/platform-bootstrap.md#4-aws-state-backups-vendor-tokens)
+   [4. AWS](https://github.com/NCodeGroup/identity/blob/main/docs/platform-bootstrap.md#4-aws-state-backups-vendor-tokens)
    — registrar, GitHub, Cloudflare bootstrap token, AWS account. This root doesn't use OCI, so section 5 can wait for
    the lab. This README is the runbook's section 6.
 2. Install OpenTofu through [tenv](https://github.com/tofuutils/tenv); in the repository run `tenv tofu install`, which
@@ -51,7 +51,7 @@ Decisions behind it:
 5. Create the short-lived **GitHub bootstrap token** — fine-grained, only this repository, _Administration_,
    _Environments_, and _Variables_ read/write, expiring tomorrow, approved by an organization owner — as in runbook
    section
-   [6. Run the bootstrap stack](https://github.com/NCodeGroup/Identity/blob/main/docs/platform-bootstrap.md#6-run-the-bootstrap-stack).
+   [6. Run the bootstrap stack](https://github.com/NCodeGroup/identity/blob/main/docs/platform-bootstrap.md#6-run-the-bootstrap-stack).
 
 Set the credentials for **this shell only** — never in a file:
 
@@ -87,10 +87,10 @@ guard keep safe.
    ```
 
    The first apply imports the repository you created by hand (runbook section
-   [2. GitHub](https://github.com/NCodeGroup/Identity/blob/main/docs/platform-bootstrap.md#2-github-organization-and-repository))
+   [2. GitHub](https://github.com/NCodeGroup/identity/blob/main/docs/platform-bootstrap.md#2-github-organization-and-repository))
    instead of creating it. If DNSSEC fails because the zone is still `pending`, carry on: delegate the domain to the
    name servers shown in the Cloudflare dashboard (runbook section
-   [7. Delegate the domain](https://github.com/NCodeGroup/Identity/blob/main/docs/platform-bootstrap.md#7-delegate-the-domain))
+   [7. Delegate the domain](https://github.com/NCodeGroup/identity/blob/main/docs/platform-bootstrap.md#7-delegate-the-domain))
    and re-run `tofu apply` once the zone is active.
 
 3. **Move the state into S3.** Delete the override and let OpenTofu copy the state into
@@ -145,7 +145,7 @@ apply, by design.
 
 Like every root, this one consumes components only by released version — pinned to a protected, immutable release tag
 (`?ref=vX.Y.Z`), never by local path; CI rejects anything else
-([ADR-1133](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1133-we-ship-and-run-the-same-deployment-artifacts.md),
+([ADR-1133](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1133-we-ship-and-run-the-same-deployment-artifacts.md),
 the member rule). A component change therefore reaches this root in two steps: release it, then bump the `ref` here —
 see [Releasing](../../README.md#releasing).
 

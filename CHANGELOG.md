@@ -36,14 +36,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - `ci`: `ci` checks the decision index, cancels a run that a newer push supersedes (never a `main` commit's), and
   stops after 30 minutes. Dependabot gives the NCode Review action, and each ecosystem's security updates, pull
   requests of their own.
-- `agents`: `/ship-plan` files a plan's follow-ups as issues in NCodeGroup/Identity (`follow-ups: NCodeGroup/Identity`),
+- `agents`: `/ship-plan` files a plan's follow-ups as issues in NCodeGroup/identity (`follow-ups: NCodeGroup/identity`),
   where the platform's pending work is tracked, instead of listing them.
 
 ### Fixed
 
 - `docs`: Links to the library's decision records point at its `docs/decisions/` folder, and pending work at its
   issues, since the library moved its ADRs out of `docs/adr/` and replaced `BACKLOG.md` with GitHub issues
-  ([ADR-1306](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1306-pending-work-is-tracked-as-github-issues-linked-by-address-in-files.md)).
+  ([ADR-1306](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1306-pending-work-is-tracked-as-github-issues-linked-by-address-in-files.md)).
 - `bootstrap`: The lock file records the components' current provider constraints (`cloudflare/cloudflare >= 5.13.0`,
   from `cloudflare-zone` v0.3.1) and every platform's checksums. `init -lockfile=readonly` warned that the lock file
   was out of date on every run.
