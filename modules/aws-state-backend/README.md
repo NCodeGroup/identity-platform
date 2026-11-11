@@ -2,7 +2,7 @@
 
 The S3 bucket and KMS key that hold OpenTofu state for every root. State is encrypted twice: at rest by S3 with the
 customer-managed key, and client-side by OpenTofu's state encryption before it leaves the runner
-([ADR-1132](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1132-platform-infrastructure-as-code-is-public-on-github.md)).
+([ADR-1132](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1132-platform-infrastructure-as-code-is-public-on-github.md)).
 
 - **Bucket:** versioned, so any earlier state can be restored; old versions expire after
   `noncurrent_version_retention_days`. Object ownership is enforced, public access is blocked, and the bucket policy

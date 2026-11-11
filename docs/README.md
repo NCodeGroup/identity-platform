@@ -6,11 +6,11 @@ The documents that describe identity-platform. Every document in `docs/` has a l
 
 - [decisions/](decisions/README.md): the project template's decision records, in
   [decisions/project-template/](decisions/project-template/README.md). The platform's own decisions are ADRs in the
-  library repository's [`docs/decisions/`](https://github.com/NCodeGroup/Identity/tree/main/docs/decisions).
+  library repository's [`docs/decisions/`](https://github.com/NCodeGroup/identity/tree/main/docs/decisions).
 - Each component and live root documents itself in its `README.md`, under `modules/` and `live/`; the
   [README](../README.md) describes the layout, the conventions and how releases work.
 - The platform's designs and runbooks, such as the
-  [platform bootstrap runbook](https://github.com/NCodeGroup/Identity/blob/main/docs/platform-bootstrap.md), live in
+  [platform bootstrap runbook](https://github.com/NCodeGroup/identity/blob/main/docs/platform-bootstrap.md), live in
   the library repository's `docs/`.
 
 ## Rules

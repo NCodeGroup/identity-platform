@@ -1,6 +1,6 @@
 # Agent guide — identity-platform
 
-Infrastructure as code for the hosted [NCode.Identity](https://github.com/NCodeGroup/Identity) platform at
+Infrastructure as code for the hosted [NCode.Identity](https://github.com/NCodeGroup/identity) platform at
 `nidentity.io`: reusable OpenTofu components and the live configuration of the platform's own environments. The
 repository is public on purpose and never holds credentials, state, plans, or backups. The [README](README.md) is the
 full description — layout, components, live roots, environments, conventions, and local setup.
@@ -35,11 +35,11 @@ this repository's win.
 ## Rules and conventions
 
 - Decisions and pending work live in the library repository — its
-  [`docs/decisions/`](https://github.com/NCodeGroup/Identity/tree/main/docs/decisions) and
-  [issues](https://github.com/NCodeGroup/Identity/issues).
+  [`docs/decisions/`](https://github.com/NCodeGroup/identity/tree/main/docs/decisions) and
+  [issues](https://github.com/NCodeGroup/identity/issues).
 - This repository overrides three of the project template's decisions in `docs/decisions/project-template/`, as the
   library's
-  [ADR-1307](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1307-identity-platform-records-its-decisions-and-pending-work-in-this-repository.md)
+  [ADR-1307](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1307-identity-platform-records-its-decisions-and-pending-work-in-this-repository.md)
   decides:
   - project-template ADR-0013: `main` takes only squash merges, with linear history, not merge commits or rebases, so
     each pull request's title and body become its one commit on `main`; the `Commit attribution` check on the pull
@@ -120,7 +120,7 @@ release tags components, by hand and only when the user asks, after a pull reque
 Changelog entries are written for whoever consumes the components and roots: each starts with the component, root or
 area (`ci`, `agents`, `docs`) in backticks, and a breaking one with `**Breaking:**`. `pr-format` names the
 [pull-request protocol](.github/instructions/identity-platform.instructions.md#pull-requests), which sets each pull
-request's title and description. `follow-ups` names `NCodeGroup/Identity`, because pending work is an issue in the
+request's title and description. `follow-ups` names `NCodeGroup/identity`, because pending work is an issue in the
 library repository, not here. `gate` stays `none`: the `validate` workflow runs the [local checks](#local-checks) on
 every pull request.
 `review-bots` names `ncode-review`, the bot [`code-review`](.github/workflows/code-review.yml) runs, and `prelude`
@@ -130,7 +130,7 @@ stays `none`: the tools are on `PATH` once [Working locally](README.md#working-l
 - release: none
 - changelog: CHANGELOG.md
 - draft: no
-- follow-ups: NCodeGroup/Identity
+- follow-ups: NCodeGroup/identity
 - follow-up-label: follow-up
 - gate: none
 - protect: none
@@ -142,7 +142,7 @@ stays `none`: the tools are on `PATH` once [Working locally](README.md#working-l
 ## Plan-and-execute workflow
 
 Multi-step changes run as **plan-and-execute**
-([ADR-1170](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1170-agent-work-is-planned-on-a-frontier-model-and-executed-step-by-step-on-a-cheaper-one.md)):
+([ADR-1170](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1170-agent-work-is-planned-on-a-frontier-model-and-executed-step-by-step-on-a-cheaper-one.md)):
 Claude Opus plans into a root `PLAN.md`, Claude Sonnet 5.5 executes it one verified step at a time, and
 any step that needs a decision comes back to Opus to be re-planned.
 
@@ -219,5 +219,5 @@ matching skills already exist. Use **Ignore** for the workspace **Convert Prompt
 **Show Ignored Migrations** restores it. Generic conversion drops agent/model/tool selection and adds
 `disable-model-invocation: true`, which is outside the supported skill configuration. User-profile migration entries
 are separate and must be reviewed individually. The rationale and completed decision are in the library's
-[ADR-1170](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1170-agent-work-is-planned-on-a-frontier-model-and-executed-step-by-step-on-a-cheaper-one.md#dual-runtime-customization-contract);
+[ADR-1170](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1170-agent-work-is-planned-on-a-frontier-model-and-executed-step-by-step-on-a-cheaper-one.md#dual-runtime-customization-contract);
 no upstream fix is required to support either runtime.

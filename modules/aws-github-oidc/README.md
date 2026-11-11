@@ -1,7 +1,7 @@
 # aws-github-oidc
 
 Lets GitHub Actions workflows assume AWS IAM roles with short-lived OIDC tokens — no stored AWS keys anywhere
-([ADR-1132](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1132-platform-infrastructure-as-code-is-public-on-github.md)).
+([ADR-1132](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1132-platform-infrastructure-as-code-is-public-on-github.md)).
 
 - Creates the account's GitHub OIDC identity provider, or reuses an existing one through `provider_arn` (an account can
   have only one per URL).
@@ -14,7 +14,7 @@ Lets GitHub Actions workflows assume AWS IAM roles with short-lived OIDC tokens 
   it can use this component.
 - Every session must be named `gh-<run_id>-<run_attempt>` (`sts:RoleSessionName`), so CloudTrail ties each API call to
   the workflow run that made it
-  ([ADR-1136](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1136-provenance-is-attested-on-workloads-and-audited-for-infrastructure.md)).
+  ([ADR-1136](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1136-provenance-is-attested-on-workloads-and-audited-for-infrastructure.md)).
 - Scope apply roles to **GitHub environments** (`environment:<name>`) so environment protection rules — required
   reviewers and the deploy-from-`main` branch policy — gate who can obtain them.
 - Each role gets one inline policy from `policy_json`; keep it least-privilege.

@@ -2,7 +2,7 @@
 
 A hardened GitHub repository whose settings live in code: merge policy, security features, Actions restrictions,
 rulesets, and deployment environments
-([ADR-1132](https://github.com/NCodeGroup/Identity/blob/main/docs/decisions/1132-platform-infrastructure-as-code-is-public-on-github.md)).
+([ADR-1132](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1132-platform-infrastructure-as-code-is-public-on-github.md)).
 
 - **Merging:** squash only (pull request title and body become the commit), head branches deleted after merge.
   Auto-merge is off unless `allow_auto_merge` is set; an auto-merged pull request still waits for everything the
@@ -19,7 +19,7 @@ rulesets, and deployment environments
   makes `tofu destroy` fail.
 
 Settings with no provider support — private vulnerability reporting and immutable releases — are set by hand
-(see the [bootstrap runbook](https://github.com/NCodeGroup/Identity/blob/main/docs/platform-bootstrap.md)).
+(see the [bootstrap runbook](https://github.com/NCodeGroup/identity/blob/main/docs/platform-bootstrap.md)).
 
 ## Usage
 
