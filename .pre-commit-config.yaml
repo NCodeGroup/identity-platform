@@ -28,9 +28,9 @@ repos:
         language: system
         pass_filenames: false
         files: ^live/.*\.(tf|md)$
-      # Commits are attributed to people, not agents (Identity ADR-1128). The project template's commit-msg hook strips
-      # agent attribution, run as a script hook as the template's Update-Project.ps1 recommends. Leave core.hooksPath
-      # unset: pre-commit refuses to install while it is set.
+      # Commits are attributed to people, not agents (project-template ADR-0002). The project template's commit-msg
+      # hook strips agent attribution, run as a script hook as the template's Update-Project.ps1 recommends. Leave
+      # core.hooksPath unset: pre-commit refuses to install while it is set.
       - id: strip-agent-attribution
         name: strip agent attribution
         entry: .githooks/commit-msg

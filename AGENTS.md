@@ -39,7 +39,7 @@ this repository's win.
   [issues](https://github.com/NCodeGroup/identity/issues).
 - This repository overrides three of the project template's decisions in `docs/decisions/project-template/`, as the
   library's
-  [ADR-1307](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1307-identity-platform-records-its-decisions-and-pending-work-in-this-repository.md)
+  [ADR-1502](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1502-code-a-self-hoster-could-use-is-public-and-identity-holds-the-products-and-platforms-decisions.md)
   decides:
   - project-template ADR-0013: `main` takes only squash merges, with linear history, not merge commits or rebases, so
     each pull request's title and body become its one commit on `main`; the `Commit attribution` check on the pull
@@ -142,7 +142,7 @@ stays `none`: the tools are on `PATH` once [Working locally](README.md#working-l
 ## Plan-and-execute workflow
 
 Multi-step changes run as **plan-and-execute**
-([ADR-1170](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1170-agent-work-is-planned-on-a-frontier-model-and-executed-step-by-step-on-a-cheaper-one.md)):
+([ADR-1170](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1170-agent-work-is-planned-on-claude-opus-and-executed-step-by-step-on-claude-sonnet.md)):
 Claude Opus plans into a root `PLAN.md`, Claude Sonnet 5.5 executes it one verified step at a time, and
 any step that needs a decision comes back to Opus to be re-planned.
 
@@ -219,5 +219,5 @@ matching skills already exist. Use **Ignore** for the workspace **Convert Prompt
 **Show Ignored Migrations** restores it. Generic conversion drops agent/model/tool selection and adds
 `disable-model-invocation: true`, which is outside the supported skill configuration. User-profile migration entries
 are separate and must be reviewed individually. The rationale and completed decision are in the library's
-[ADR-1170](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1170-agent-work-is-planned-on-a-frontier-model-and-executed-step-by-step-on-a-cheaper-one.md#dual-runtime-customization-contract);
+[ADR-1170](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1170-agent-work-is-planned-on-claude-opus-and-executed-step-by-step-on-claude-sonnet.md#dual-runtime-customization-contract);
 no upstream fix is required to support either runtime.

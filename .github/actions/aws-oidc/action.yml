@@ -1,7 +1,7 @@
 name: AWS credentials from GitHub OIDC
 description: >-
   Exchanges the job's OIDC token for a one-hour session on an IAM role. The session is named after the workflow run
-  (gh-<run_id>-<run_attempt>), so CloudTrail attributes every call to it (ADR-1136).
+  (gh-<run_id>-<run_attempt>), so CloudTrail attributes every call to it (ADR-1135).
 
 inputs:
   role-arn:
