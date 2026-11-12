@@ -43,7 +43,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - `docs`: Links to the library's decision records point at its `docs/decisions/` folder, and pending work at its
   issues, since the library moved its ADRs out of `docs/adr/` and replaced `BACKLOG.md` with GitHub issues
-  ([ADR-1306](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1306-pending-work-is-tracked-as-github-issues-linked-by-address-in-files.md)).
+  ([ADR-1306](https://github.com/NCodeGroup/identity/blob/main/docs/decisions/1306-pending-work-is-tracked-as-github-issues-linked-by-address-in-repository-files.md)).
 - `bootstrap`: The lock file records the components' current provider constraints (`cloudflare/cloudflare >= 5.13.0`,
   from `cloudflare-zone` v0.3.1) and every platform's checksums. `init -lockfile=readonly` warned that the lock file
   was out of date on every run.
