@@ -10,7 +10,7 @@ Credentials, state, plans, and backups are never stored here.
 Report suspected vulnerabilities **privately** through GitHub's
 [private vulnerability reporting](https://github.com/NCodeGroup/identity-platform/security/advisories/new) — never in a
 public issue or pull request. This covers misconfigurations in this repository as well as anything you find on the
-running platform (`*.nidentity.io`).
+running platform (`*.ncodeid.net`).
 
 Vulnerabilities in the identity server itself belong to the library repository's
 [security policy](https://github.com/NCodeGroup/identity/blob/main/SECURITY.md).

@@ -29,8 +29,8 @@ module "tags" {
 
   application = "ncode-identity"
   environment = "lab"
-  owner_email = "platform@nidentity.io"
-  account     = "nidentity-platform"
+  owner_email = "platform@ncodeid.com"
+  account     = "ncodeid-platform"
   source_path = "NCodeGroup/identity-platform/live/lab"
 }
 
