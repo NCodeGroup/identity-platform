@@ -1,7 +1,7 @@
 # identity-platform
 
 Infrastructure as code for the hosted [NCode.Identity](https://github.com/NCodeGroup/identity) platform at
-`nidentity.io`: reusable OpenTofu components and the live configuration of the platform's own environments.
+`ncodeid.net`: reusable OpenTofu components and the live configuration of the platform's own environments.
 
 The repository is public on purpose: the platform's security must not depend on hiding how it is built. It never holds
 credentials, state, plans, or backups — CI authenticates with short-lived OIDC tokens and reads vendor tokens from

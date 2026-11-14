@@ -1,7 +1,7 @@
 # Agent guide — identity-platform
 
 Infrastructure as code for the hosted [NCode.Identity](https://github.com/NCodeGroup/identity) platform at
-`nidentity.io`: reusable OpenTofu components and the live configuration of the platform's own environments. The
+`ncodeid.net`: reusable OpenTofu components and the live configuration of the platform's own environments. The
 repository is public on purpose and never holds credentials, state, plans, or backups. The [README](README.md) is the
 full description — layout, components, live roots, environments, conventions, and local setup.
 
